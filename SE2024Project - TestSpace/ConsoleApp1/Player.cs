@@ -38,7 +38,7 @@ class Player{
     }
 
     public void InfoDumpOfRatRoster () {
-        foreach (var rat in playerRatRoster) {
+        foreach (object rat in playerRatRoster) {
             Console.WriteLine(rat.ToString());
         }
     }
