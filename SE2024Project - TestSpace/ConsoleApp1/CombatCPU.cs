@@ -4,9 +4,16 @@ using System.Collections.Generic;
 class CombatCPU {
     List<object> cpuRatRoster = new List<object>();
 
+    public List<object> getCPURatRoster (){
+        return cpuRatRoster;
+    }
 
     public void addToCPURatRoster(object newRat) {
         cpuRatRoster.Add(newRat);
+    }
+
+    public void clearCPURatRoster() {
+        cpuRatRoster.Clear();
     }
 
     // ToString
