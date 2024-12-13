@@ -29,6 +29,12 @@ class Player{
             return playerRatRoster;
     }
 
+    public Rat getPlayerRat(int i){
+            Rat tempRat = (Rat)playerRatRoster[i];
+            return tempRat;
+    }
+
+
     public List<object> getActivePlayerRatRoster(){
             return activePlayerRatRoster;
     }
@@ -37,9 +43,16 @@ class Player{
         return playerRatRoster.Count();
     }
 
+    public int getActiveRatRosterCount() {
+        return activePlayerRatRoster.Count();
+    }
+
     public void InfoDumpOfRatRoster () {
+        int i = 1;
         foreach (object rat in playerRatRoster) {
+            Console.WriteLine("vvv Rat [" + i + "] vvv");
             Console.WriteLine(rat.ToString());
+            i++;
         }
     }
 
@@ -54,6 +67,10 @@ class Player{
 
     public void addToActivePlayerRatRoster(object newRat) {
         playerRatRoster.Add(newRat);
+    }
+
+    public void removePlayerRat(int i){
+        playerRatRoster.RemoveAt(i);
     }
 
     public void clearActivePlayerRatRoster(){
