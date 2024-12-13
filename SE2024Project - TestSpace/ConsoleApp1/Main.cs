@@ -40,25 +40,28 @@ class Program
 
         void MainMenu () {
             Console.WriteLine("Welcome to ...Derrr RrrATHaus...");
-            Console.WriteLine("[1] - Shop\n[2] - Fight\n[3] - Your Inventory\n[0] - Close Program\n Enter: ");
-            int selector = numCheck(Console.ReadLine());
+            //Console.WriteLine("[1] - Shop\n[2] - Fight\n[3] - Your Inventory\n[0] - Close Program\n Enter: ");
+            int selector /*= numCheck(Console.ReadLine())*/;
             while (true) {
                 Console.WriteLine("[1] - Shop\n[2] - Fight\n[3] - Your Inventory\n[0] - Close Program\n Enter: ");
+#pragma warning disable CS8604 // Possible null reference argument.
                 selector = numCheck(Console.ReadLine());
+#pragma warning restore CS8604 // Possible null reference argument.
                 if (selector == 1) {
                     ShopMenu();
                 } else if (selector == 2) {
                     CombatMenu();
-                } 
-                else if (selector == 3) {
-                    // Inventoru
+                } else if (selector == 3) {
+                    InventoryMenu();
                 } else if (selector == 0) {
                     return;
                 } 
-                Console.WriteLine("[1] - Shop\n[2] - Fight\n[3] - Your Inventory\n[0] - Close Program\n Enter: ");
-                selector = numCheck(Console.ReadLine());
+                // Console.WriteLine("[1] - Shop\n[2] - Fight\n[3] - Your Inventory\n[0] - Close Program\n Enter: ");
+                // selector = numCheck(Console.ReadLine());
             }
         }
+
+        // ************* Shop *************
         
         List<object> ShopDisplay (int numOfRatsToCreate, int RatLv) {
             // Console.WriteLine("Welcome to the Rats R Us\n");
@@ -135,63 +138,138 @@ class Program
                     break;
                 } else {
                     Console.WriteLine("Please input valid #: ");
-                    selector = Convert.ToInt32(Console.ReadLine());
+#pragma warning disable CS8604 // Possible null reference argument.
+                    selector = numCheck(Console.ReadLine());
+#pragma warning restore CS8604 // Possible null reference argument.
                 }
             }
         }
 
         void ShopMenu (){
             Console.WriteLine("***** Welcome to the Rats R Us*****\n");
-            Console.Write("[1] Buy Rat\n[2] Sell Rat\n[3] Return\nEnter: ");
-            int input = numCheck(Console.ReadLine());
+            //Console.Write("[1] Buy Rat\n[2] Sell Rat\n[3] Return\nEnter: ");
+            int input /*= numCheck(Console.ReadLine())*/;
             while (true) { 
-                    if (input == 1) {
-                        Console.Write("Lvl of Rats: ");
-                        int LvOfRats = numCheck(Console.ReadLine());
-                        List<object> shopRatList = new List<object>();
-                        shopRatList = ShopDisplay(5, Convert.ToInt32(Console.ReadLine()));
-                        Console.WriteLine("Enter [1-6] To buy respective Rat, [0] to close: ");
-                        int input2 = Convert.ToInt32(Console.ReadLine());
-                        ShopBuy(input2, shopRatList, LvOfRats);
-
-                    } else if (input == 2) {
-                        Console.WriteLine("Selling Rat is not available ");
-                    } else if (input == 3) {
-                        Console.WriteLine("Exitting");
-                        break;
-                    } else {
-                        Console.WriteLine("Please input valid #: ");
-                        input = Convert.ToInt32(Console.ReadLine());
-                    }
-                    Console.Write("[1] Buy Rat\n[2] Sell Rat\n[3] Return\nEnter: ");
+                Console.Write("[1] Buy Rat\n[2] Sell Rat\n[3] Return\nEnter: ");
+                input = numCheck(Console.ReadLine());
+                if (input == 1) {
+                    Console.Write("Lvl of Rats: ");
+                    int LvOfRats = numCheck(Console.ReadLine());
+                    List<object> shopRatList = new List<object>();
+                    shopRatList = ShopDisplay(5, numCheck(Console.ReadLine()));
+                    Console.WriteLine("Enter [1-6] To buy respective Rat, [0] to close: ");
+                    int input2 = numCheck(Console.ReadLine());
+                    ShopBuy(input2, shopRatList, LvOfRats);
+                } else if (input == 2) {
+                   Console.WriteLine("Selling Rat is not available ");
+                } else if (input == 3) {
+                    Console.WriteLine("Exitting");
+                    break;
+                } else {
+                    Console.WriteLine("Please input valid #: ");
                     input = Convert.ToInt32(Console.ReadLine());
+                }
+                // Console.Write("[1] Buy Rat\n[2] Sell Rat\n[3] Return\nEnter: ");
+                // input = Convert.ToInt32(Console.ReadLine());
             }
         }
 
+        // ************* Inventory *************
 
+        void InventoryMenu() {
+            Console.WriteLine("***** Your Inventory *****");
+            //Console.WriteLine("[1] - Your Rat(s)\n[2] - Your Stats\n[0] - Return\nEnter: ");
+            int selector /*= numCheck(Console.ReadLine())*/;
+            while (true) {
+                Console.WriteLine("[1] - Your Rat(s)\n[2] - Your Stats\n[0] - Return\nEnter: ");
+                selector = numCheck(Console.ReadLine());
+                if (selector == 1) {
+                        mainPlayer.InfoDumpOfRatRoster();
+                    } else if (selector == 2) {
+                        Console.WriteLine("Your Money: " + mainPlayer.money);
+                    } else if (selector == 0) {
+                        break;
+                    } else {
+                        Console.WriteLine("Please input valid number: ");
+                        selector = numCheck(Console.ReadLine());
+                    }
+                    // Console.WriteLine("[1] - Your Rat(s)\n[2] - Your Stats\n[0] - Return");
+                    // selector = numCheck(Console.ReadLine());
+            }
+            Console.WriteLine("Returning...");
+        }
 
-        // void MainMenu () {
-        //     Console.WriteLine("Welcome to ...Derrr RrrATHaus...");
-        //     Console.WriteLine("[1] - Shop\n[2] - Fight\n[3] - Your Inventory\n[0] - Close Program\n Enter: ");
-        //     int selector = numCheck(Console.ReadLine());
-        //     while (true) {
-        //         Console.WriteLine("[1] - Shop\n[2] - Fight\n[3] - Your Inventory\n[0] - Close Program\n Enter: ");
-        //         selector = numCheck(Console.ReadLine());
-        //         if (selector == 1) {
-        //             ShopMenu();
-        //         } else if (selector == 2) {
-        //             CombatMenu();
-        //         } 
-        //         else if (selector == 3) {
-        //             // Inventoru
-        //         } else if (selector == 0) {
-        //             return;
-        //         } 
-        //         Console.WriteLine("[1] - Shop\n[2] - Fight\n[3] - Your Inventory\n[0] - Close Program\n Enter: ");
-        //         selector = numCheck(Console.ReadLine());
-        //     }
-        // }
+        // ************* Combat/Combat Menu *************
 
+        void CombatMenu (){
+            Console.WriteLine("Entering the RatClurb...");
+            Console.WriteLine("What Level of Rats do you want to fight\n[1] - Level 1\n[2] - Level 2\n[3] - Level 3\n[0] - Return\nEnter: ");
+            int selector = numCheck(Console.ReadLine());
+            while (true) {   
+                if (selector == 1) {
+                    ChallengeSetupCombatMenu(1);
+                } else if (selector == 2) {
+                    ChallengeSetupCombatMenu(2);
+                } else if (selector == 3) {
+                    ChallengeSetupCombatMenu(3);
+                } else if (selector == 0) {
+                    break;
+                } else {
+                    Console.WriteLine("Please input valid number: ");
+                    selector = numCheck(Console.ReadLine());
+                }
+            }
+        }
+
+        void ChallengeSetupCombatMenu (int LvSet){
+            Console.WriteLine("What Challenge do you want to face\n[1] - 1 Enemy Rat\n[2] - 3 Enemy Rats\n[3] - 5 Enemy Rats\n[0] - Return\n Enter: ");
+            int selector = numCheck(Console.ReadLine());
+            mainPlayer.clearActivePlayerRatRoster();
+            while (true) {
+                if (selector == 1) { //Player should always have at least one rat
+                    cpuRatRosterSetup(1, LvSet);
+                    playerRatRosterSetup(1);
+                    ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 1, LvSet);
+                } else if (selector == 2) {
+                    if (mainPlayer.getRatRosterCount() >= 3) {
+                        cpuRatRosterSetup(3, LvSet);
+                        playerRatRosterSetup(3);
+                        ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 3, LvSet);
+                    }
+                } else if (selector == 3) {
+                    if (mainPlayer.getRatRosterCount() >= 5) {
+                        cpuRatRosterSetup(5, LvSet);
+                        playerRatRosterSetup(5);
+                        ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 5, LvSet);
+                    }
+                } else if (selector == 0) {
+                    break;
+                } else {
+                    Console.WriteLine("Please input valid number: ");
+                    selector = numCheck(Console.ReadLine());
+                }
+                Console.WriteLine("Returning...\n");
+            }
+        }
+
+        void cpuRatRosterSetup (int numOfRatsToCreate, int Lv) {
+            CPU.clearCPURatRoster();
+            for (int i = 0; i < numOfRatsToCreate; i++) {
+                CPU.addToCPURatRoster( ratCreator(Lv) );
+            }
+        }
+        
+        void playerRatRosterSetup (int numOfRatsAllowed) {
+            Console.WriteLine(numOfRatsAllowed + " Rat(s) are allowed, and you get to chose the order of who fights");
+            Console.WriteLine("\nDisplaying your Rats\n");
+            mainPlayer.InfoDumpOfRatRoster();
+            
+        }
+
+        void ACTUALFUCKINGRATFIGHT (List<object> playersRats, List<object> enemysRats, int NumOfFighters, int fightLv){
+            Job RatFight = new Job(playersRats, enemysRats, 1);
+
+        }
 
         // Creates a single rat object with randomized stats
         object ratCreator(int level)
@@ -236,73 +314,6 @@ class Program
             }
         }
 
-        void CombatMenu (){
-            Console.WriteLine("Entering the RatClurb...");
-            Console.WriteLine("What Level of Rats do you want to fight\n[1] - Level 1\n[2] - Level 2\n[3] - Level 3\n[0] - Return\n Enter: ");
-            int selector = numCheck(Console.ReadLine());
-            while (true) {   
-                if (selector == 1) {
-                    ChallengeSetupCombatMenu(1);
-                } else if (selector == 2) {
-                    ChallengeSetupCombatMenu(2);
-                } else if (selector == 3) {
-                    ChallengeSetupCombatMenu(3);
-                } else if (selector == 0) {
-                    break;
-                } else {
-                    Console.WriteLine("Please input valid number: ");
-                    selector = numCheck(Console.ReadLine());
-                }
-            }
-        }
-
-        void ChallengeSetupCombatMenu (int LvSet){
-            Console.WriteLine("What Challenge do you want to face\n[1] - 1 Enemy Rat\n[2] - 3 Enemy Rats\n[3] - 5 Enemy Rats\n[0] - Return\n Enter: ");
-            int selector = numCheck(Console.ReadLine());
-            mainPlayer.clearActivePlayerRatRoster();
-            while (true) {
-                if (selector == 1) { //Player should always have at least one rat
-                    cpuRatRosterSetup(1, LvSet);
-                    playerRatRosterSetup(1);
-                    ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 1);
-                } else if (selector == 2) {
-                    if (mainPlayer.getRatRosterCount() >= 3) {
-                        cpuRatRosterSetup(3, LvSet);
-                        playerRatRosterSetup(3);
-                        ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 1);
-                    }
-                } else if (selector == 3) {
-                    if (mainPlayer.getRatRosterCount() >= 5) {
-                        cpuRatRosterSetup(5, LvSet);
-                        playerRatRosterSetup(5);
-                        ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 1);
-                    }
-                } else if (selector == 0) {
-                    break;
-                } else {
-                    Console.WriteLine("Please input valid number: ");
-                    selector = numCheck(Console.ReadLine());
-                }
-                Console.WriteLine("Returning...\n");
-            }
-        }
-
-        void cpuRatRosterSetup (int numOfRatsToCreate, int Lv) {
-            CPU.clearCPURatRoster();
-            for (int i = 0; i < numOfRatsToCreate; i++) {
-                CPU.addToCPURatRoster( ratCreator(Lv) );
-            }
-        }
-        
-        void playerRatRosterSetup (int numOfRatsAllowed) {
-            Console.WriteLine(numOfRatsAllowed + " Rat(s) are allowed, and you get to chose the order of who fights");
-            Console.WriteLine("\nDisplaying your Rats\n");
-            mainPlayer.InfoDumpOfRatRoster();
-        }
-
-        void ACTUALFUCKINGRATFIGHT (List<object> playersRats, List<object> enemysRats, int NumOfFighters){
-            
-        }
 
         // Gives Player half decent rat to start out w/
         void givePlayerDefaultRat (){
@@ -313,9 +324,11 @@ class Program
                                     ,7//spd
                                     ,"Rattus Norvegicus"//Name
                                     );
+            mainPlayer.addToPlayerRatRoster(RatBase);
         }
 
         givePlayerDefaultRat(); // :D
         MainMenu();
+        Console.WriteLine("Remember, second mouse gets the cheese. Till next time...\n");
     }
 }
