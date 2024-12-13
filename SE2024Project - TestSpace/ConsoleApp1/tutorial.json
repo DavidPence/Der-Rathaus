@@ -1,0 +1,59 @@
+{
+    "Rats" : [
+        {
+            "ID": 0,
+            "hp": 8,
+            "currentHp": 8,
+            "stam": 8,
+            "currentStam": 8,
+            "atk": 4,
+            "def": 7,
+            "spd": 2,
+            "ratName": "Hairy Rizzo"
+        },
+        {
+            "ID": 1,
+            "hp": 5,
+            "currentHp": 5,
+            "stam": 4,
+            "currentStam": 4,
+            "atk": 1,
+            "def": 1,
+            "spd": 2,
+            "ratName": "Shining Rizzo"
+        },
+        {
+            "ID": 2,
+            "hp": 8,
+            "currentHp": 8,
+            "stam": 8,
+            "currentStam": 8,
+            "atk": 5,
+            "def": 5,
+            "spd": 2,
+            "ratName": "Snazzy Stuart"
+        },
+        {
+            "ID": 3,
+            "hp": 9,
+            "currentHp": 9,
+            "stam": 5,
+            "currentStam": 5,
+            "atk": 2,
+            "def": 8,
+            "spd": 8,
+            "ratName": "Snazzy Ratsputin"
+        },
+        {
+            "ID": 4,
+            "hp": 8,
+            "currentHp": 8,
+            "stam": 9,
+            "currentStam": 9,
+            "atk": 2,
+            "def": 5,
+            "spd": 3,
+            "ratName": "Rotten Jerry"
+        }
+    ]
+}
