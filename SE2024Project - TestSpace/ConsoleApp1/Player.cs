@@ -58,20 +58,30 @@ class Player{
             Console.WriteLine("vvv Rat [" + i + "] vvv");
             Console.WriteLine(rat.ToString());
             i++;
+            Thread.Sleep(300); 
         }
     }
 
-    // public object getARatFromRatRoster(int ratRosterID){
-    //     return playerRatRoster[ratRosterID];
-    // }
+    public string getBasicPlayerInfo() {
+        string allRatNamesInRoster= "";
+        int G = money;
+        foreach (Rat rat in playerRatRoster){
+            allRatNamesInRoster += ($"{rat.ratName}\n");
+        }
+        return $"\nYour Rat(s):\n{allRatNamesInRoster}\nG : {G}\n";
+    }
 
     //Adds a Rat object to List<> playerRatCollection
     public void addToPlayerRatRoster(object newRat) {
+        if (getRatRosterCount() <= 5) {
         playerRatRoster.Add(newRat);
+        } else {
+            Console.WriteLine ("At maximium # of Rat you can own at a time (Sell a Rat to make room)");
+        }
     }
 
     public void addToActivePlayerRatRoster(object newRat) {
-        playerRatRoster.Add(newRat);
+        activePlayerRatRoster.Add(newRat);
     }
 
     public void removePlayerRat(int i){

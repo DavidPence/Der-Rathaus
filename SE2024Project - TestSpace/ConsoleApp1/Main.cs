@@ -13,6 +13,7 @@ class Program
 
         //Variables
 
+        bool canBuy = true;
 
         string[] ratAdjNameList = {"Cheesy", "Cheezy" , "The" , "Der"
                                     , "Slimey", "Terrible", "Hairy", "Nasty", "Awful", "Hideous", "Lousy", "Vuglar", "Rotten", "Detestable", "Stupid"
@@ -33,18 +34,25 @@ class Program
                 try {
                     return Convert.ToInt32(num);
                 } catch {
-                    Console.WriteLine("Please input valid #: ");
+                    Console.Write("Please input valid #: ");
                     num = Console.ReadLine();
                 }
             }
         }
 
         void MainMenu () {
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Welcome to ...Derrr RrrATHaus...");
-            //Console.WriteLine("[1] - Shop\n[2] - Fight\n[3] - Your Inventory\n[0] - Close Program\n Enter: ");
-            int selector /*= numCheck(Console.ReadLine())*/;
+            int selector;
+            Thread.Sleep(300); 
             while (true) {
-                Console.WriteLine("[1] - Shop\n[2] - Fight\n[3] - Your Inventory\n[0] - Close Program\nEnter: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Thread.Sleep(500); 
+                Console.WriteLine("*** Main Menu *** ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(mainPlayer.getBasicPlayerInfo());
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("[1] - Shop\n[2] - Fight\n[3] - Your Inventory\n[0] - Close Program\nEnter: ");
                 selector = numCheck(Console.ReadLine());
                 if (selector == 1) {
                     ShopMenu();
@@ -64,10 +72,37 @@ class Program
         
         // Has Rats created then display in text
         List<object> ShopDisplay (int numOfRatsToCreate, int RatLv) {
-            // Console.WriteLine("Welcome to the Rats R Us\n");
+            int costOfRat = 1000;
             List<object> shopRatList = new List<object>();
+            while (true){
+                if (RatLv == 1) {
+                    costOfRat = 100;
+                    if (mainPlayer.money < costOfRat) {
+                        Console.WriteLine("You do not have enough money to buy a Level " + RatLv + " rat\n");
+                        canBuy = false;
+                        return shopRatList;
+                    }
+                    break;
+                } else if (RatLv == 2) {
+                    costOfRat = 500;
+                    if (mainPlayer.money < costOfRat) {
+                        Console.WriteLine("You do not have enough money to buy a Level " + RatLv + " rat\n");
+                        canBuy = false;
+                        return shopRatList;
+                    }
+                    break;
+                } else if (RatLv == 3) {
+                    costOfRat = 1000;
+                    if (mainPlayer.money < costOfRat) {
+                        Console.WriteLine("You do not have enough money to buy a Level " + RatLv + " rat\n");
+                        canBuy = false;
+                        return shopRatList;
+                    }
+                    break;
+                }
+            }
+            //List<object> shopRatList = new List<object>();
             for (int i = 0; i < numOfRatsToCreate+1; i++) {
-                //Console.WriteLine((i+1) + " Rat created!");
                 shopRatList.Add( ratCreator(RatLv) );
             }
             int count = 0;
@@ -76,6 +111,7 @@ class Program
                 count++;
                 Console.WriteLine("vvv Displaying Rat [" + count + "] vvv");
                 Console.WriteLine(shopRat.ToString());
+                Thread.Sleep(300); 
             }
             Console.WriteLine("End of Shop Display");
             return shopRatList;
@@ -89,6 +125,7 @@ class Program
                     costOfRat = 100;
                     if (mainPlayer.money < costOfRat) {
                         Console.WriteLine("You do not have enough money to buy a Level " + LvToCost + " rat\n");
+                        canBuy = false;
                         return;
                     }
                     break;
@@ -96,6 +133,7 @@ class Program
                     costOfRat = 500;
                     if (mainPlayer.money < costOfRat) {
                         Console.WriteLine("You do not have enough money to buy a Level " + LvToCost + " rat\n");
+                        canBuy = false;
                         return;
                     }
                     break;
@@ -103,43 +141,57 @@ class Program
                     costOfRat = 1000;
                     if (mainPlayer.money < costOfRat) {
                         Console.WriteLine("You do not have enough money to buy a Level " + LvToCost + " rat\n");
+                        canBuy = false;
                         return;
                     }
                     break;
                 }
             }
-            while (true) {    
+            while (canBuy) {    
                 if (selector == 0) {
                     Console.WriteLine("Returning\n");
                     break;
                 } else if (selector == 1) {
                     mainPlayer.addToPlayerRatRoster(shopRatList[0]);
-                    Console.WriteLine("Buying Rat 1");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine($"Buying {shopRatList[0]}");
+                    Console.ResetColor();
+                    // Console.WriteLine($"Buying Rat 1");
                     mainPlayer.money = mainPlayer.money - costOfRat;
                     break;
                 } else if (selector == 2) {
                     mainPlayer.addToPlayerRatRoster(shopRatList[1]);
-                    Console.WriteLine("Buying Rat 2");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine($"Buying {shopRatList[1]}");
+                    Console.ResetColor();
                     mainPlayer.money = mainPlayer.money - costOfRat;
                     break;
                 } else if (selector == 3) {
                     mainPlayer.addToPlayerRatRoster(shopRatList[2]);
-                    Console.WriteLine("Buying Rat 3");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine($"Buying {shopRatList[2]}");
+                    Console.ResetColor();
                     mainPlayer.money = mainPlayer.money - costOfRat;
                     break;
                 } else if (selector == 4) {
                     mainPlayer.addToPlayerRatRoster(shopRatList[3]);
-                    Console.WriteLine("Buying Rat 4");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine($"Buying {shopRatList[3]}");
+                    Console.ResetColor();
                     mainPlayer.money = mainPlayer.money - costOfRat;
                     break;
                 } else if (selector == 5) {
                     mainPlayer.addToPlayerRatRoster(shopRatList[4]);
-                    Console.WriteLine("Buying Rat 5");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine($"Buying {shopRatList[4]}");
+                    Console.ResetColor();
                     mainPlayer.money = mainPlayer.money - costOfRat;
                     break;
                 } else if (selector == 6) {
                     mainPlayer.addToPlayerRatRoster(shopRatList[5]);
-                    Console.WriteLine("Buying Rat 6");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine($"Buying {shopRatList[5]}");
+                    Console.ResetColor();
                     mainPlayer.money = mainPlayer.money - costOfRat;
                     break;
                 } else {
@@ -152,7 +204,7 @@ class Program
         void ShopSell (int selector) {
             string comfirm = "N";
             int ratSellPrice = ShopRatSellPrice( mainPlayer.getPlayerRat(selector-1) );
-            Console.WriteLine("Are you sure you want to sell " + mainPlayer.getPlayerRat(selector-1).ratName + " for " + ratSellPrice + "G Enter [Y/N]: ");
+            Console.Write("Are you sure you want to sell " + mainPlayer.getPlayerRat(selector-1).ratName + " for " + ratSellPrice + "G Enter [Y/N]: ");
             comfirm = Console.ReadLine();
             if (comfirm == "Y") {
                 mainPlayer.money = mainPlayer.money + ratSellPrice;
@@ -175,38 +227,48 @@ class Program
             }
         }
 
+        //bool canBuy =true;
         void ShopMenu (){
-            //Console.WriteLine("***** Welcome to the Rats R Us*****");
-            //Console.Write("[1] Buy Rat\n[2] Sell Rat\n[3] Return\nEnter: ");
+            canBuy = true;
             int input /*= numCheck(Console.ReadLine())*/;
             while (true) { 
+                Thread.Sleep(500); 
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\n***** Welcome to the Rats R Us*****");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(mainPlayer.getBasicPlayerInfo());
+                Console.ForegroundColor = ConsoleColor.White;
+
                 Console.Write("[1] Buy Rat\n[2] Sell Rat\n[0] Return\nEnter: ");
                 input = numCheck(Console.ReadLine());
-                if (input == 1) {
+                if (input == 1) { // To Buy Rat
                     Console.Write("Lvl of Rats: ");
                     int LvOfRats = numCheck(Console.ReadLine());
                     List<object> shopRatList = new List<object>();
                     shopRatList = ShopDisplay(4, LvOfRats);
-                    Console.WriteLine("Enter [1-5] To buy respective Rat, [0] to close: ");
-                    int input2 = numCheck(Console.ReadLine());
-                    ShopBuy(input2, shopRatList, LvOfRats);
+                    Thread.Sleep(500); 
+                    if (canBuy) {
+                        Console.WriteLine("Enter [1-5] To buy respective Rat, [0] to close: ");
+                        int input2 = numCheck(Console.ReadLine());
+                        ShopBuy(input2, shopRatList, LvOfRats);
+                    }
 
-                } else if (input == 2) {
+                } else if (input == 2) { //To Sell Rat
                     if ( mainPlayer.getRatRosterCount() > 1) {
                         mainPlayer.InfoDumpOfRatRoster();
-                        Console.WriteLine("What Rat would you like to sell\nEnter: ");
+                        Console.Write("What Rat would you like to sell\nEnter: ");
                         ShopSell( numCheck(Console.ReadLine()) );
                     } else {
                         Console.WriteLine("Cannot sell any rats. You must have ONE at all times\n");
                     }
 
                 } else if (input == 0) {
-                    Console.WriteLine("Exitting");
+                    Console.WriteLine("Returning...\n****************");
+                    Thread.Sleep(200); 
                     break;
 
                 } else {
-                    Console.WriteLine("Please input valid #: ");
+                    Console.Write("Please input valid #: ");
                     input = Convert.ToInt32(Console.ReadLine());
                 }
                 // Console.Write("[1] Buy Rat\n[2] Sell Rat\n[3] Return\nEnter: ");
@@ -224,7 +286,7 @@ class Program
             int selector /*= numCheck(Console.ReadLine())*/;
             while (true) {
                 Console.WriteLine("\n***** Your Inventory *****");
-                Console.WriteLine("[1] - Your Rat(s)\n[2] - Your Stats\n[0] - Return\nEnter: ");
+                Console.Write("[1] - Your Rat(s)\n[2] - Your Stats\n[0] - Return\nEnter: ");
                 selector = numCheck(Console.ReadLine());
                 if (selector == 1) {
                         mainPlayer.InfoDumpOfRatRoster();
@@ -311,82 +373,49 @@ class Program
             }
         }
         
-        void playerRatRosterSetup(int numOfRatsAllowed)
-{
-    Console.WriteLine(numOfRatsAllowed + " Rat(s) are allowed, and you get to choose who fights and the order.");
-    Console.WriteLine("\nDisplaying your Rats\n");
-    mainPlayer.InfoDumpOfRatRoster();
+        void playerRatRosterSetup(int numOfRatsAllowed){
+            Console.WriteLine(numOfRatsAllowed + " Rat(s) are allowed, and you get to choose who fights and the order.");
+            Console.WriteLine("\nDisplaying your Rats\n");
+            mainPlayer.InfoDumpOfRatRoster();
 
-    for (int i = 0; i < numOfRatsAllowed; i++)
-    {
-        if (mainPlayer.getActiveRatRosterCount() == 5)
-        {
-            Console.WriteLine("Active Roster Full");
-            break;
+            for (int i = 0; i < numOfRatsAllowed; i++){
+                if (mainPlayer.getActiveRatRosterCount() == 5){
+                    Console.WriteLine("Active Roster Full");
+                    break;
+                }
+
+                Console.WriteLine("Choose Rat: ");
+                int selector = numCheck(Console.ReadLine());
+
+                if (selector < 1 || selector > mainPlayer.getPlayerRatRoster().Count)
+                {
+                    Console.WriteLine("Invalid selection. Try again.");
+                    i--;  // Retry this iteration
+                    continue;
+                }
+
+                var selectedRat = mainPlayer.getPlayerRat(selector - 1);
+
+                // Check for duplicates
+                if (mainPlayer.getActivePlayerRatRoster().Contains(selectedRat))
+                {
+                    Console.WriteLine("Rat already in active roster");
+                    continue;
+                }
+
+                // Add rat to active roster
+                Console.WriteLine($"Adding {selectedRat.ratName}");
+                mainPlayer.addToActivePlayerRatRoster(selectedRat);
+
+                Console.WriteLine("Current Active Roster:");
+                // foreach (var rat in mainPlayer.getActivePlayerRatRoster())
+                //      Console.WriteLine(rat.ratName);
+                for (int j = 0; j<mainPlayer.getActiveRatRosterCount()-1; j++){
+                    Console.WriteLine(mainPlayer.getActivePlayerRat(j).ratName);
+                }
+                Console.WriteLine("Conitueing");
+            }
         }
-
-        Console.WriteLine("Choose Rat: ");
-        int selector = numCheck(Console.ReadLine());
-
-        if (selector < 1 || selector > mainPlayer.getPlayerRatRoster().Count)
-        {
-            Console.WriteLine("Invalid selection. Try again.");
-            i--;  // Retry this iteration
-            continue;
-        }
-
-        var selectedRat = mainPlayer.getPlayerRat(selector - 1);
-
-        // Check for duplicates
-        if (mainPlayer.getActivePlayerRatRoster().Contains(selectedRat))
-        {
-            Console.WriteLine("Rat already in active roster");
-            continue;
-        }
-
-        // Add rat to active roster
-        Console.WriteLine($"Adding {selectedRat.ratName}");
-        mainPlayer.addToActivePlayerRatRoster(selectedRat);
-
-        Console.WriteLine("Current Active Roster:");
-        // foreach (var rat in mainPlayer.getActivePlayerRatRoster())
-        //     Console.WriteLine(rat.ratName);
-        for (int j = 0; i<mainPlayer.getActiveRatRosterCount()-1; j++){
-            Console.WriteLine("I AM HERE");
-            Console.WriteLine(mainPlayer.getActivePlayerRat(j).ratName);
-        }
-        Console.WriteLine("Conitueing");
-    }
-}
-        // void playerRatRosterSetup (int numOfRatsAllowed) {
-        //     Console.WriteLine(numOfRatsAllowed + " Rat(s) are allowed, and you get to chose who fights and the order ");
-        //     Console.WriteLine("\nDisplaying your Rats\n");
-        //     mainPlayer.InfoDumpOfRatRoster();
-        //     for (int i=0; i<numOfRatsAllowed; i++) {
-        //         Console.WriteLine("Chose Rat: ");
-        //         int selector = numCheck(Console.ReadLine());
-        //         if ( mainPlayer.getActiveRatRosterCount() == 5) {
-        //             Console.WriteLine("Active Roster Full");
-        //             break;
-        //         }
-
-        //         bool ratInListAlready = false;
-        //         Console.WriteLine("Checking if rat is in list");
-        //         if (mainPlayer.getActivePlayerRatRoster().Contains(mainPlayer.getPlayerRat(selector - 1))) {
-        //             Console.WriteLine("Rat already in active roster");
-        //             ratInListAlready = true;
-        //         }
-
-        //         Console.WriteLine("Done checking");
-        //         if (!ratInListAlready) {
-        //             Console.WriteLine($"Adding { mainPlayer.getPlayerRat(selector-1).ratName }");
-        //             mainPlayer.addToActivePlayerRatRoster(mainPlayer.getPlayerRat(selector-1));
-        //         }
-
-
-        //     }
-            
-        // }
 
         int ACTUALFUCKINGRATFIGHT (List<object> playersRats, List<object> enemysRats, int numOfFighters, int fightLv){
             Console.WriteLine("FUCKING FIGHTING");
@@ -399,11 +428,15 @@ class Program
                 } else if (fightLv == 3) {
                     return 500*numOfFighters;
                 } else {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("If you are seeing this I did something wrong :P");
+                    Console.ResetColor();
                     return 0*numOfFighters;
                 }
             } else {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("CPU Wins");
+                Console.ResetColor();
                 return 0;
             }
             
@@ -469,17 +502,26 @@ class Program
                     Console.WriteLine($"{CPUName} took {playerDmg} and is at {CPUHp}");
                     playerTurn = false;
                 } else {
+                    Console.ForegroundColor = ConsoleColor.Green;
                     PlayerHp -= CPUDmg;
                     Console.WriteLine($"{PlayerName} took {CPUDmg} and is at {PlayerHp}");
                     playerTurn = true;
+                    Console.ResetColor();
                 }
+                Thread.Sleep(1000); 
 
                 if (CPUHp <= 0) {
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"********\n{PlayerName} Has won!\nPlayer wins round {i+1}\n********\n");
+                    Thread.Sleep(2000); 
+                    Console.ResetColor();
                     return true;
                 }
                 if (PlayerHp <= 0) {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"********\n{CPUName} Has won!\nCPU wins round {i+1}\n********\n");
+                    Thread.Sleep(2000); 
+                    Console.ResetColor();
                     return false;
                 }
             }
