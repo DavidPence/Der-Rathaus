@@ -3,6 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks.Dataflow;
+using System.Data.SqlTypes;
 class Program
 {
     public static void Main(string[] args)
@@ -48,7 +49,7 @@ class Program
                 if (selector == 1) {
                     ShopMenu();
                 } else if (selector == 2) {
-                    CombatMenu();
+                    mainPlayer.money = mainPlayer.money + CombatMenu();
                 } else if (selector == 3) {
                     InventoryMenu();
                 } else if (selector == 0) {
@@ -186,8 +187,8 @@ class Program
                     Console.Write("Lvl of Rats: ");
                     int LvOfRats = numCheck(Console.ReadLine());
                     List<object> shopRatList = new List<object>();
-                    shopRatList = ShopDisplay(5, LvOfRats);
-                    Console.WriteLine("Enter [1-6] To buy respective Rat, [0] to close: ");
+                    shopRatList = ShopDisplay(4, LvOfRats);
+                    Console.WriteLine("Enter [1-5] To buy respective Rat, [0] to close: ");
                     int input2 = numCheck(Console.ReadLine());
                     ShopBuy(input2, shopRatList, LvOfRats);
 
@@ -243,19 +244,20 @@ class Program
 
         // ************* Combat/Combat Menu *************
 
-        void CombatMenu (){
+        int CombatMenu (){
             Console.WriteLine("Entering the RatClurb...");
             Console.WriteLine("What Level of Rats do you want to fight\n[1] - Level 1\n[2] - Level 2\n[3] - Level 3\n[0] - Return\nEnter: ");
             int selector = numCheck(Console.ReadLine());
             while (true) {   
                 if (selector == 1) {
-                    ChallengeSetupCombatMenu(1);
+                    return ChallengeSetupCombatMenu(1);
                 } else if (selector == 2) {
-                    ChallengeSetupCombatMenu(2);
+                    return ChallengeSetupCombatMenu(2);
                 } else if (selector == 3) {
-                    ChallengeSetupCombatMenu(3);
+                    return ChallengeSetupCombatMenu(3);
                 } else if (selector == 0) {
-                    break;
+                    Console.WriteLine("Returning...");
+                    return 0;
                 } else {
                     Console.WriteLine("Please input valid number: ");
                     selector = numCheck(Console.ReadLine());
@@ -263,7 +265,7 @@ class Program
             }
         }
 
-        void ChallengeSetupCombatMenu (int LvSet){
+        int ChallengeSetupCombatMenu (int LvSet){
             Console.WriteLine("What Challenge do you want to face\n[1] - 1 Enemy Rat\n[2] - 3 Enemy Rats\n[3] - 5 Enemy Rats\n[0] - Return\n Enter: ");
             int selector = numCheck(Console.ReadLine());
             mainPlayer.clearActivePlayerRatRoster();
@@ -271,26 +273,34 @@ class Program
                 if (selector == 1) { //Player should always have at least one rat
                     cpuRatRosterSetup(1, LvSet);
                     playerRatRosterSetup(1);
-                    ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 1, LvSet);
+                    return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 1, LvSet);
                 } else if (selector == 2) {
                     if (mainPlayer.getRatRosterCount() >= 3) {
                         cpuRatRosterSetup(3, LvSet);
                         playerRatRosterSetup(3);
-                        ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 3, LvSet);
+                        return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 3, LvSet);
+
+                    } else {
+                        Console.WriteLine("You do not have enough rats");
+                        return 0;
                     }
                 } else if (selector == 3) {
                     if (mainPlayer.getRatRosterCount() >= 5) {
                         cpuRatRosterSetup(5, LvSet);
                         playerRatRosterSetup(5);
-                        ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 5, LvSet);
+                        return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 5, LvSet);
+                    } else {
+                        Console.WriteLine("You do not have enough rats");
+                        return 0;
                     }
                 } else if (selector == 0) {
-                    break;
+                    return 0;
                 } else {
                     Console.WriteLine("Please input valid number: ");
                     selector = numCheck(Console.ReadLine());
                 }
                 Console.WriteLine("Returning...\n");
+                return 0;
             }
         }
 
@@ -301,49 +311,181 @@ class Program
             }
         }
         
-        void playerRatRosterSetup (int numOfRatsAllowed) {
-            Console.WriteLine(numOfRatsAllowed + " Rat(s) are allowed, and you get to chose who fights and the order ");
-            Console.WriteLine("\nDisplaying your Rats\n");
-            mainPlayer.InfoDumpOfRatRoster();
-            for (int i=0; i<numOfRatsAllowed; i++) {
-                Console.WriteLine("Chose Rat: ");
-                int selector = numCheck(Console.ReadLine());
-                // if ( mainPlayer.getActiveRatRosterCount() == 5) {
-                //     Console.WriteLine("Active Roster Full");
-                //     break;
-                // }
+        void playerRatRosterSetup(int numOfRatsAllowed)
+{
+    Console.WriteLine(numOfRatsAllowed + " Rat(s) are allowed, and you get to choose who fights and the order.");
+    Console.WriteLine("\nDisplaying your Rats\n");
+    mainPlayer.InfoDumpOfRatRoster();
 
-
-                // foreach (object item in list1) {
-                //     if (list2.Contains(item)) {
-                //         Console.WriteLine($"Found: {item} in list2");
-                //     }
-                // }
-
-
-                // foreach (var rat in mainPlayer.getPlayerRatRoster()){
-                //     int count = 0;
-                //     foreach (var selectedRat in mainPlayer.getActivePlayerRatRoster()){
-                //         Console.WriteLine("Checking" + mainPlayer.getPlayerRat(count).ratName);
-                //         int count2 = 0;
-                //         if (selectedRat == rat) {
-                //             Console.WriteLine("Rat already chosen\n");
-                //         } else {
-                //             mainPlayer.addToActivePlayerRatRoster(rat);
-                //             Console.WriteLine("Adding " + mainPlayer.getPlayerRat(count2).ratName);
-                //         }
-                //         count2++;
-                //     }
-                //     count++;
-                // }
-            }
-            
+    for (int i = 0; i < numOfRatsAllowed; i++)
+    {
+        if (mainPlayer.getActiveRatRosterCount() == 5)
+        {
+            Console.WriteLine("Active Roster Full");
+            break;
         }
 
-        void ACTUALFUCKINGRATFIGHT (List<object> playersRats, List<object> enemysRats, int NumOfFighters, int fightLv){
-            Console.WriteLine("FUCKING FIGHTING");
-            Job RatFight = new Job(playersRats, enemysRats, 1);
+        Console.WriteLine("Choose Rat: ");
+        int selector = numCheck(Console.ReadLine());
 
+        if (selector < 1 || selector > mainPlayer.getPlayerRatRoster().Count)
+        {
+            Console.WriteLine("Invalid selection. Try again.");
+            i--;  // Retry this iteration
+            continue;
+        }
+
+        var selectedRat = mainPlayer.getPlayerRat(selector - 1);
+
+        // Check for duplicates
+        if (mainPlayer.getActivePlayerRatRoster().Contains(selectedRat))
+        {
+            Console.WriteLine("Rat already in active roster");
+            continue;
+        }
+
+        // Add rat to active roster
+        Console.WriteLine($"Adding {selectedRat.ratName}");
+        mainPlayer.addToActivePlayerRatRoster(selectedRat);
+
+        Console.WriteLine("Current Active Roster:");
+        // foreach (var rat in mainPlayer.getActivePlayerRatRoster())
+        //     Console.WriteLine(rat.ratName);
+        for (int j = 0; i<mainPlayer.getActiveRatRosterCount()-1; j++){
+            Console.WriteLine("I AM HERE");
+            Console.WriteLine(mainPlayer.getActivePlayerRat(j).ratName);
+        }
+        Console.WriteLine("Conitueing");
+    }
+}
+        // void playerRatRosterSetup (int numOfRatsAllowed) {
+        //     Console.WriteLine(numOfRatsAllowed + " Rat(s) are allowed, and you get to chose who fights and the order ");
+        //     Console.WriteLine("\nDisplaying your Rats\n");
+        //     mainPlayer.InfoDumpOfRatRoster();
+        //     for (int i=0; i<numOfRatsAllowed; i++) {
+        //         Console.WriteLine("Chose Rat: ");
+        //         int selector = numCheck(Console.ReadLine());
+        //         if ( mainPlayer.getActiveRatRosterCount() == 5) {
+        //             Console.WriteLine("Active Roster Full");
+        //             break;
+        //         }
+
+        //         bool ratInListAlready = false;
+        //         Console.WriteLine("Checking if rat is in list");
+        //         if (mainPlayer.getActivePlayerRatRoster().Contains(mainPlayer.getPlayerRat(selector - 1))) {
+        //             Console.WriteLine("Rat already in active roster");
+        //             ratInListAlready = true;
+        //         }
+
+        //         Console.WriteLine("Done checking");
+        //         if (!ratInListAlready) {
+        //             Console.WriteLine($"Adding { mainPlayer.getPlayerRat(selector-1).ratName }");
+        //             mainPlayer.addToActivePlayerRatRoster(mainPlayer.getPlayerRat(selector-1));
+        //         }
+
+
+        //     }
+            
+        // }
+
+        int ACTUALFUCKINGRATFIGHT (List<object> playersRats, List<object> enemysRats, int numOfFighters, int fightLv){
+            Console.WriteLine("FUCKING FIGHTING");
+            if (RatFightHandler(numOfFighters)){
+                Console.WriteLine("Player Wins");
+                if (fightLv == 1) {
+                    return 50*numOfFighters;
+                } else if (fightLv == 2) {
+                    return 250*numOfFighters;
+                } else if (fightLv == 3) {
+                    return 500*numOfFighters;
+                } else {
+                    Console.WriteLine("If you are seeing this I did something wrong :P");
+                    return 0*numOfFighters;
+                }
+            } else {
+                Console.WriteLine("CPU Wins");
+                return 0;
+            }
+            
+            
+
+        }
+
+        // Atk/(2^(Atk/Def))
+        bool RatFightHandler(int numOfFighters) {
+            int wins = 1;
+            int loses = 1;
+            for (int i = 0; i < numOfFighters; i++) {
+                Console.WriteLine($"\n*******************************************\nRound {i+1}, Fight!");
+                if (RatFight(i)) {
+                    wins++;
+                } else {
+                    loses++;
+                }
+            }
+            if (wins/loses >= 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        bool RatFight (int i) {
+            Random rnd = new Random();
+            // player rat vars
+            string PlayerName = mainPlayer.getActivePlayerRat(i).ratName;
+            float PlayerAtk = mainPlayer.getActivePlayerRat(i).atk;
+            float PlayerDef = mainPlayer.getActivePlayerRat(i).def;
+            float PlayerSpd = mainPlayer.getActivePlayerRat(i).spd;
+            float PlayerHp = mainPlayer.getActivePlayerRat(i).hp;
+            bool playerTurn = true;
+
+            // CPU rat vars
+            string CPUName = CPU.getCPURat(i).ratName;
+            float CPUAtk = CPU.getCPURat(i).atk;
+            float CPUDef = CPU.getCPURat(i).def;
+            float CPUSpd = CPU.getCPURat(i).spd;
+            float CPUHp = CPU.getCPURat(i).hp;
+            //bool CPUTurn = false;
+
+            // Damage values for each side
+            float playerDmg = (float)( PlayerAtk / Math.Pow(2, (double)PlayerAtk / CPUDef) );
+            float CPUDmg = (float)( CPUAtk / Math.Pow(2, (double)CPUAtk / PlayerDef) );
+
+            // decides who goes first
+            if (PlayerSpd < CPUSpd) {
+                playerTurn = false;
+            } else if (PlayerSpd == CPUSpd) {
+                if (rnd.Next(0,2) == 1) {
+                    // CPU wins tie
+                    playerTurn = false;
+                }
+            }
+
+            // Rats trade blows till K.O.
+            while (true) {
+                if (playerTurn) {
+                    CPUHp -= playerDmg;
+                    Console.WriteLine($"{CPUName} took {playerDmg} and is at {CPUHp}");
+                    playerTurn = false;
+                } else {
+                    PlayerHp -= CPUDmg;
+                    Console.WriteLine($"{PlayerName} took {CPUDmg} and is at {PlayerHp}");
+                    playerTurn = true;
+                }
+
+                if (CPUHp <= 0) {
+                    Console.WriteLine($"********\n{PlayerName} Has won!\nPlayer wins round {i+1}\n********\n");
+                    return true;
+                }
+                if (PlayerHp <= 0) {
+                    Console.WriteLine($"********\n{CPUName} Has won!\nCPU wins round {i+1}\n********\n");
+                    return false;
+                }
+            }
+                
+
+            
         }
 
         // Creates a single rat object with randomized stats
@@ -357,11 +499,11 @@ class Program
                 //Random rnd = new Random();
                 Rat RatLv3 = new Rat (  newName//Name :P
                                         ,3
-                                        ,rnd.Next(25, 30)//hp
-                                        ,rnd.Next(15, 30)//stam
-                                        ,rnd.Next(15, 30)//atk
-                                        ,rnd.Next(15, 30)//def
-                                        ,rnd.Next(15, 30)//spd
+                                        ,rnd.Next(25, 31)//hp
+                                        ,rnd.Next(15, 31)//stam
+                                        ,rnd.Next(15, 31)//atk
+                                        ,rnd.Next(15, 31)//def
+                                        ,rnd.Next(15, 31)//spd
                                     );
                 //Console.WriteLine(RatLv3.ToString());
                 return RatLv3;
@@ -369,11 +511,11 @@ class Program
                 // Random rnd = new Random();
                 Rat RatLv2 = new Rat (  newName//Name :P
                                         ,2
-                                        ,rnd.Next(15, 20)//hp
-                                        ,rnd.Next(10, 20)//stam
-                                        ,rnd.Next(10, 20)//atk
-                                        ,rnd.Next(10, 20)//def
-                                        ,rnd.Next(10, 20)//spd
+                                        ,rnd.Next(15, 21)//hp
+                                        ,rnd.Next(10, 21)//stam
+                                        ,rnd.Next(10, 21)//atk
+                                        ,rnd.Next(10, 21)//def
+                                        ,rnd.Next(10, 21)//spd
                                     );
                 //Console.WriteLine(RatLv2.ToString());
                 return RatLv2;
@@ -381,11 +523,11 @@ class Program
                 // Random rnd = new Random();
                 Rat RatLv1 = new Rat(   newName//Name :P
                                         ,1
-                                        ,rnd.Next(5, 10)//hp
-                                        ,rnd.Next(1, 10)//stam
-                                        ,rnd.Next(1, 10)//atk
-                                        ,rnd.Next(1, 10)//def
-                                        ,rnd.Next(1, 10)//spd
+                                        ,rnd.Next(5, 11)//hp
+                                        ,rnd.Next(1, 11)//stam
+                                        ,rnd.Next(1, 11)//atk
+                                        ,rnd.Next(1, 11)//def
+                                        ,rnd.Next(1, 11)//spd
                                     );
                 //Console.WriteLine(RatLv1.ToString());
                 return RatLv1;

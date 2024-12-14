@@ -42,4 +42,13 @@ class Rat {
         int getLevel(){
                 return level;
         }
+
+        public int getCurrentHp(){
+                return currentHp;
+        }
+
+        void TakeDamage (int dmg) {
+                currentHp = currentHp - dmg;
+        }
+
 }
