@@ -34,6 +34,11 @@ class Player{
             return tempRat;
     }
 
+    public Rat getActivePlayerRat(int i){
+            Rat tempRat = (Rat)playerRatRoster[i];
+            return tempRat;
+    }
+
 
     public List<object> getActivePlayerRatRoster(){
             return activePlayerRatRoster;

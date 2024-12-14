@@ -7,6 +7,10 @@ class CombatCPU {
     public List<object> getCPURatRoster (){
         return cpuRatRoster;
     }
+    public Rat getCPURat(int i){
+            Rat tempRat = (Rat)cpuRatRoster[i];
+            return tempRat;
+    }
 
     public void addToCPURatRoster(object newRat) {
         cpuRatRoster.Add(newRat);
