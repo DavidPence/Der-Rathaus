@@ -63,12 +63,12 @@ class Player{
     }
 
     public string getBasicPlayerInfo() {
-        string allRatNamesInRoster= "";
+        string allNamesInRoster= "";
         int G = money;
         foreach (Rat rat in playerRatRoster){
-            allRatNamesInRoster += ($"{rat.ratName}\n");
+            allNamesInRoster += ($"{rat.name}\n");
         }
-        return $"\nYour Rat(s):\n{allRatNamesInRoster}\nG : {G}\n";
+        return $"\nYour Rat(s):\n{allNamesInRoster}\nG : {G}\n";
     }
 
     //Adds a Rat object to List<> playerRatCollection

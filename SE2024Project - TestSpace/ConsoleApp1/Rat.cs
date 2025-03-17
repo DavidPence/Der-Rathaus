@@ -1,9 +1,10 @@
 using System.Text;
-
+using System.Collections;
+using System.Collections.Generic;
 class Rat {
         private static int lastID = 0;
         private int ID { get; set; }
-        public string ratName { get; set; }
+        public string name { get; set; }
         public int level { get; private set; }
         public int hp { get; set; }
         private int currentHp { get; set; }
@@ -15,9 +16,9 @@ class Rat {
        
        
         // Constructor
-        public Rat(string ratName, int level, int hp, int stam, int atk, int def, int spd) {
+        public Rat(string name, int level, int hp, int stam, int atk, int def, int spd) {
         this.ID = lastID++;
-        this.ratName = ratName;
+        this.name = name;
         this.level = level;
         this.hp = hp;
         this.currentHp = hp;
@@ -39,7 +40,7 @@ class Rat {
                                   );
         }
 
-        int getLevel(){
+        public int getLevel(){
                 return level;
         }
 
@@ -47,8 +48,8 @@ class Rat {
                 return currentHp;
         }
 
-        string getRatName(){
-                return ratName;
+        string getName(){
+                return name;
         }
 
         void TakeDamage (int dmg) {

@@ -22,12 +22,25 @@ class Program
                                     , "Zippy", "Blistering", "Quick", "Hasty", "Nippy", "Rapid", "Energetic", "Rushing"}; 
 
         string[] ratNounNameList = {"Rat", "Cheese", "Rattus", "Remy", "Maus", "Mouse", "Nezumi", "Mickey", "Minnie", "Suzy", "Jerry", "Mordax", "Mortimer", "Rizzo", "Stuart", "Fucker", "Pence", "Morse", "Dugan", "Pinky", "Brain", "Ratsby", "Ratsputin"};
-        
+        string[] catNounNameList = {"Cat", "Furball", "Felis", "Catus", "Kitten", "Kitty", "Kat", "Slivester", "Tom", "Putty-Tat"};
+
+        int[,] MAP = {  {8,8,8,8,8,5,5,5,5,5},
+                        {8,8,8,8,8,5,5,5,5,5},
+                        {8,8,8,8,8,3,3,9,9,9},
+                        {6,6,2,2,2,3,3,9,0,9},
+                        {6,6,2,2,2,3,3,9,0,9},
+                        {6,6,6,0,0,3,3,9,0,9},
+                        {6,6,6,0,0,3,3,9,9,9},
+                        {7,7,7,1,1,4,4,4,4,4},
+                        {7,7,7,1,1,4,0,0,0,4},
+                        {7,7,7,7,7,4,4,4,4,4}}; 
         
         //Main
 
         Player mainPlayer = new Player();
-        CombatCPU CPU = new CombatCPU();
+        CombatCPU Catsby = new CombatCPU("TheivesCat"); 
+        CombatCPU Marko = new CombatCPU("BirdMafia");
+        CombatCPU Theodog = new CombatCPU("TheBarky");
 
         int numCheck (string num){
             while (true){
@@ -57,7 +70,7 @@ class Program
                 if (selector == 1) {
                     ShopMenu();
                 } else if (selector == 2) {
-                    mainPlayer.money = mainPlayer.money + CombatMenu();
+                    mainPlayer.money = mainPlayer.money + TerritoryMenu();
                 } else if (selector == 3) {
                     InventoryMenu();
                 } else if (selector == 0) {
@@ -204,11 +217,11 @@ class Program
         void ShopSell (int selector) {
             string comfirm = "N";
             int ratSellPrice = ShopRatSellPrice( mainPlayer.getPlayerRat(selector-1) );
-            Console.Write("Are you sure you want to sell " + mainPlayer.getPlayerRat(selector-1).ratName + " for " + ratSellPrice + "G Enter [Y/N]: ");
+            Console.Write("Are you sure you want to sell " + mainPlayer.getPlayerRat(selector-1).name + " for " + ratSellPrice + "G Enter [Y/N]: ");
             comfirm = Console.ReadLine();
             if (comfirm == "Y") {
                 mainPlayer.money = mainPlayer.money + ratSellPrice;
-                Console.WriteLine("Selling " + mainPlayer.getPlayerRat(selector-1).ratName + "\n");
+                Console.WriteLine("Selling " + mainPlayer.getPlayerRat(selector-1).name + "\n");
                 mainPlayer.removePlayerRat(selector-1);
             } else {
                 Console.WriteLine("Not Selling Rat, Returning...\n");
@@ -306,17 +319,45 @@ class Program
 
         // ************* Combat/Combat Menu *************
 
-        int CombatMenu (){
-            Console.WriteLine("Entering the RatClurb...");
-            Console.WriteLine("What Level of Rats do you want to fight\n[1] - Level 1\n[2] - Level 2\n[3] - Level 3\n[0] - Return\nEnter: ");
+        int TerritoryMenu (){
+            Console.WriteLine("Who's on the choppin' block today:");
+            Console.WriteLine("What Level of Rats do you want to fight\n[1] - Cats\n[2] - Birds\n[3] - Dogs\n[0] - Return\nEnter: ");
+            int selector = numCheck(Console.ReadLine());
+            switch (selector) {
+                case 1:
+                    return CombatMenu(Catsby);
+                case 2:
+                    return CombatMenu(Marko);
+                case 3:
+                    return CombatMenu(Theodog);
+                case 0:
+                    return 0;
+            }
+            return 0;
+        }
+
+        int CombatMenu (CombatCPU opponent){
+            Console.WriteLine("Where to next Boss...");
+            switch (opponent.allegiance){
+                case "ThievesCat":
+                    break;
+                case "BirdMafia":
+                    break;
+                case "DogCops":
+                    break;
+            } 
+
+            Console.WriteLine("What Level of Rats do you want to fight\n[1] The Thourghfare - Level 1\n[2] Hell's Kitchen - Level 2\n[3] No Man's Land - Level 3\n[4] The Backalley - Level 4\n[0] - Return\nEnter: ");
             int selector = numCheck(Console.ReadLine());
             while (true) {   
                 if (selector == 1) {
-                    return ChallengeSetupCombatMenu(1);
+                    return ChallengeSetupCombatMenu(1, opponent);
                 } else if (selector == 2) {
-                    return ChallengeSetupCombatMenu(2);
+                    return ChallengeSetupCombatMenu(2, opponent);
                 } else if (selector == 3) {
-                    return ChallengeSetupCombatMenu(3);
+                    return ChallengeSetupCombatMenu(3, opponent);
+                } else if (selector ==4) {
+                    return ChallengeSetupCombatMenu(4, opponent);
                 } else if (selector == 0) {
                     Console.WriteLine("Returning...");
                     return 0;
@@ -327,20 +368,20 @@ class Program
             }
         }
 
-        int ChallengeSetupCombatMenu (int LvSet){
+        int ChallengeSetupCombatMenu (int LvSet, CombatCPU opponent){
             Console.WriteLine("What Challenge do you want to face\n[1] - 1 Enemy Rat\n[2] - 3 Enemy Rats\n[3] - 5 Enemy Rats\n[0] - Return\n Enter: ");
             int selector = numCheck(Console.ReadLine());
             mainPlayer.clearActivePlayerRatRoster();
             while (true) {
                 if (selector == 1) { //Player should always have at least one rat
-                    cpuRatRosterSetup(1, LvSet);
+                    cpuRatRosterSetup(1, LvSet, opponent);
                     playerRatRosterSetup(1);
-                    return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 1, LvSet);
+                    return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), opponent.getCPURatRoster(), 1, LvSet);
                 } else if (selector == 2) {
                     if (mainPlayer.getRatRosterCount() >= 3) {
-                        cpuRatRosterSetup(3, LvSet);
+                        cpuRatRosterSetup(3, LvSet, opponent);
                         playerRatRosterSetup(3);
-                        return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 3, LvSet);
+                        return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), opponent.getCPURatRoster(), 3, LvSet);
 
                     } else {
                         Console.WriteLine("You do not have enough rats");
@@ -348,9 +389,9 @@ class Program
                     }
                 } else if (selector == 3) {
                     if (mainPlayer.getRatRosterCount() >= 5) {
-                        cpuRatRosterSetup(5, LvSet);
+                        cpuRatRosterSetup(5, LvSet, opponent);
                         playerRatRosterSetup(5);
-                        return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), CPU.getCPURatRoster(), 5, LvSet);
+                        return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), Catsby.getCPURatRoster(), 5, LvSet);
                     } else {
                         Console.WriteLine("You do not have enough rats");
                         return 0;
@@ -366,11 +407,27 @@ class Program
             }
         }
 
-        void cpuRatRosterSetup (int numOfRatsToCreate, int Lv) {
-            CPU.clearCPURatRoster();
-            for (int i = 0; i < numOfRatsToCreate; i++) {
-                CPU.addToCPURatRoster( ratCreator(Lv) );
+        void cpuRatRosterSetup (int numOfRatsToCreate, int Lv, CombatCPU opponent) {
+            opponent.clearCPURatRoster();
+            switch (opponent.allegiance) {
+                case "ThievesCat":
+                    for (int i = 0; i < numOfRatsToCreate; i++) {
+                        Catsby.addToCPURatRoster( catCreator(Lv) );
+                    }
+                    break;
+                case "birdMafia":
+                    for (int i = 0; i < numOfRatsToCreate; i++) {
+                        Marko.addToCPURatRoster( birdCreator(Lv) );
+                    }
+                    break;
+                case "DogCop":
+                    for (int i = 0; i < numOfRatsToCreate; i++) {
+                        Theodog.addToCPURatRoster( dogCreator(Lv) );
+                    }
+                    break;
             }
+
+            
         }
         
         void playerRatRosterSetup(int numOfRatsAllowed){
@@ -404,14 +461,14 @@ class Program
                 }
 
                 // Add rat to active roster
-                Console.WriteLine($"Adding {selectedRat.ratName}");
+                Console.WriteLine($"Adding {selectedRat.name}");
                 mainPlayer.addToActivePlayerRatRoster(selectedRat);
 
                 Console.WriteLine("Current Active Roster:");
                 // foreach (var rat in mainPlayer.getActivePlayerRatRoster())
-                //      Console.WriteLine(rat.ratName);
+                //      Console.WriteLine(rat.name);
                 for (int j = 0; j<mainPlayer.getActiveRatRosterCount()-1; j++){
-                    Console.WriteLine(mainPlayer.getActivePlayerRat(j).ratName);
+                    Console.WriteLine(mainPlayer.getActivePlayerRat(j).name);
                 }
                 Console.WriteLine("Conitueing");
             }
@@ -439,9 +496,6 @@ class Program
                 Console.ResetColor();
                 return 0;
             }
-            
-            
-
         }
 
         // Atk/(2^(Atk/Def))
@@ -466,7 +520,7 @@ class Program
         bool RatFight (int i) {
             Random rnd = new Random();
             // player rat vars
-            string PlayerName = mainPlayer.getActivePlayerRat(i).ratName;
+            string PlayerName = mainPlayer.getActivePlayerRat(i).name;
             float PlayerAtk = mainPlayer.getActivePlayerRat(i).atk;
             float PlayerDef = mainPlayer.getActivePlayerRat(i).def;
             float PlayerSpd = mainPlayer.getActivePlayerRat(i).spd;
@@ -474,11 +528,11 @@ class Program
             bool playerTurn = true;
 
             // CPU rat vars
-            string CPUName = CPU.getCPURat(i).ratName;
-            float CPUAtk = CPU.getCPURat(i).atk;
-            float CPUDef = CPU.getCPURat(i).def;
-            float CPUSpd = CPU.getCPURat(i).spd;
-            float CPUHp = CPU.getCPURat(i).hp;
+            string CPUName = Catsby.getCPURat(i).name;
+            float CPUAtk = Catsby.getCPURat(i).atk;
+            float CPUDef = Catsby.getCPURat(i).def;
+            float CPUSpd = Catsby.getCPURat(i).spd;
+            float CPUHp = Catsby.getCPURat(i).hp;
             //bool CPUTurn = false;
 
             // Damage values for each side
@@ -499,12 +553,12 @@ class Program
             while (true) {
                 if (playerTurn) {
                     CPUHp -= playerDmg;
-                    Console.WriteLine($"{CPUName} took {playerDmg} and is at {CPUHp}");
+                    Console.WriteLine($"{CPUName} took {Math.Round(playerDmg, 2)} and is at {Math.Round(CPUHp, 2)}");
                     playerTurn = false;
                 } else {
-                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.Blue;
                     PlayerHp -= CPUDmg;
-                    Console.WriteLine($"{PlayerName} took {CPUDmg} and is at {PlayerHp}");
+                    Console.WriteLine($"{PlayerName} took {Math.Round(CPUDmg, 2)} and is at {Math.Round(PlayerHp, 2)}");
                     playerTurn = true;
                     Console.ResetColor();
                 }
@@ -537,45 +591,235 @@ class Program
             int adjRndNum = rnd.Next(ratAdjNameList.Length);//grabs rnd adj from list
             int nounRndNum = rnd.Next(ratNounNameList.Length);//grabs rnd noun from list
             string newName = ratAdjNameList[adjRndNum]+" "+ratNounNameList[nounRndNum];//Combines adj & noun
-            if (level == 3) {
-                //Random rnd = new Random();
-                Rat RatLv3 = new Rat (  newName//Name :P
-                                        ,3
-                                        ,rnd.Next(25, 31)//hp
-                                        ,rnd.Next(15, 31)//stam
-                                        ,rnd.Next(15, 31)//atk
-                                        ,rnd.Next(15, 31)//def
-                                        ,rnd.Next(15, 31)//spd
-                                    );
-                //Console.WriteLine(RatLv3.ToString());
-                return RatLv3;
-            } else if (level == 2) {
-                // Random rnd = new Random();
-                Rat RatLv2 = new Rat (  newName//Name :P
-                                        ,2
-                                        ,rnd.Next(15, 21)//hp
-                                        ,rnd.Next(10, 21)//stam
-                                        ,rnd.Next(10, 21)//atk
-                                        ,rnd.Next(10, 21)//def
-                                        ,rnd.Next(10, 21)//spd
-                                    );
-                //Console.WriteLine(RatLv2.ToString());
-                return RatLv2;
-            } else {
-                // Random rnd = new Random();
-                Rat RatLv1 = new Rat(   newName//Name :P
-                                        ,1
-                                        ,rnd.Next(5, 11)//hp
-                                        ,rnd.Next(1, 11)//stam
-                                        ,rnd.Next(1, 11)//atk
-                                        ,rnd.Next(1, 11)//def
-                                        ,rnd.Next(1, 11)//spd
-                                    );
-                //Console.WriteLine(RatLv1.ToString());
-                return RatLv1;
+            switch (level) {
+                case 1:
+                    // Random rnd = new Random();
+                    Rat RatLv1 = new Rat(   newName//Name :P
+                                            ,level
+                                            ,rnd.Next(5, 11)//hp
+                                            ,rnd.Next(1, 11)//stam
+                                            ,rnd.Next(1, 11)//atk
+                                            ,rnd.Next(1, 11)//def
+                                            ,rnd.Next(1, 11)//spd
+                                        );
+                    //Console.WriteLine(RatLv1.ToString());
+                    return RatLv1;
+                case 2:
+                    // Random rnd = new Random();
+                    Rat RatLv2 = new Rat(  newName//Name :P
+                                            ,level
+                                            ,rnd.Next(15, 21)//hp
+                                            ,rnd.Next(10, 21)//stam
+                                            ,rnd.Next(10, 21)//atk
+                                            ,rnd.Next(10, 21)//def
+                                            ,rnd.Next(10, 21)//spd
+                                        );
+                    //Console.WriteLine(RatLv2.ToString());
+                    return RatLv2;
+                case 3:
+                    //Random rnd = new Random();
+                    Rat RatLv3 = new Rat(   newName//Name :P
+                                            ,level
+                                            ,rnd.Next(25, 31)//hp
+                                            ,rnd.Next(15, 31)//stam
+                                            ,rnd.Next(15, 31)//atk
+                                            ,rnd.Next(15, 31)//def
+                                            ,rnd.Next(15, 31)//spd
+                                        );
+                    //Console.WriteLine(RatLv3.ToString());
+                    return RatLv3;
+                case 4:
+                    //Random rnd = new Random();
+                    Rat RatLv4 = new Rat(   newName//Name :P
+                                            ,level
+                                            ,rnd.Next(35, 36)//hp
+                                            ,rnd.Next(25, 36)//stam
+                                            ,rnd.Next(25, 36)//atk
+                                            ,rnd.Next(25, 36)//def
+                                            ,rnd.Next(25, 36)//spd
+                                        );
+                    //Console.WriteLine(RatLv3.ToString());
+                    return RatLv4;
             }
+            return givePlayerDefaultRat();
         }
 
+        // Creates a single CAT object with randomized stats
+        object catCreator(int level) {
+            Random rnd = new Random();
+            int adjRndNum = rnd.Next(ratAdjNameList.Length);//grabs rnd adj from list
+            int nounRndNum = rnd.Next(ratNounNameList.Length);//grabs rnd noun from list
+            string newName = ratAdjNameList[adjRndNum]+" "+ratNounNameList[nounRndNum];//Combines adj & noun
+            switch (level) {
+                case 1:
+                    // Random rnd = new Random();
+                    Rat CatLv1 = new Rat(   newName//Name :P
+                                            ,level
+                                            ,rnd.Next(5, 11)//hp
+                                            ,rnd.Next(1, 11)//stam
+                                            ,rnd.Next(1, 11) + 2//atk
+                                            ,rnd.Next(1, 11)//def
+                                            ,rnd.Next(1, 11)//spd
+                                        );
+                    //Console.WriteLine(RatLv1.ToString());
+                    return CatLv1;
+                case 2:
+                    // Random rnd = new Random();
+                    Rat CatLv2 = new Rat(  newName//Name :P
+                                            ,level
+                                            ,rnd.Next(15, 21)//hp
+                                            ,rnd.Next(10, 21)//stam
+                                            ,rnd.Next(10, 21) + 3//atk
+                                            ,rnd.Next(10, 21)//def
+                                            ,rnd.Next(10, 21)//spd
+                                        );
+                    //Console.WriteLine(RatLv2.ToString());
+                    return CatLv2;
+                case 3:
+                    //Random rnd = new Random();
+                    Rat CatLv3 = new Rat(   newName//Name :P
+                                            ,level
+                                            ,rnd.Next(25, 31)//hp
+                                            ,rnd.Next(15, 31)//stam
+                                            ,rnd.Next(15, 31) + 4//atk
+                                            ,rnd.Next(15, 31)//def
+                                            ,rnd.Next(15, 31)//spd
+                                        );
+                    //Console.WriteLine(RatLv3.ToString());
+                    return CatLv3;
+                case 4:
+                    //Random rnd = new Random();
+                    Rat CatLv4 = new Rat(   newName//Name :P
+                                            ,level
+                                            ,rnd.Next(35, 36)//hp
+                                            ,rnd.Next(25, 36)//stam
+                                            ,rnd.Next(25, 36) + 5//atk
+                                            ,rnd.Next(25, 36)//def
+                                            ,rnd.Next(25, 36)//spd
+                                        );
+                    //Console.WriteLine(RatLv3.ToString());
+                    return CatLv4;
+            }
+            return givePlayerDefaultRat();
+        }
+
+        // Creates a single BIRD object with randomized stats
+        object birdCreator(int level) {
+            Random rnd = new Random();
+            int adjRndNum = rnd.Next(ratAdjNameList.Length);//grabs rnd adj from list
+            int nounRndNum = rnd.Next(ratNounNameList.Length);//grabs rnd noun from list
+            string newName = ratAdjNameList[adjRndNum]+" "+ratNounNameList[nounRndNum];//Combines adj & noun
+            switch (level) {
+                case 1:
+                    // Random rnd = new Random();
+                    Rat BirdLv1 = new Rat(   newName//Name :P
+                                            ,level
+                                            ,rnd.Next(5, 11)//hp
+                                            ,rnd.Next(1, 11)//stam
+                                            ,rnd.Next(1, 11)//atk
+                                            ,rnd.Next(1, 11)//def
+                                            ,rnd.Next(1, 11) + 2//spd
+                                        );
+                    //Console.WriteLine(RatLv1.ToString());
+                    return BirdLv1;
+                case 2:
+                    // Random rnd = new Random();
+                    Rat BirdLv2 = new Rat(  newName//Name :P
+                                            ,level
+                                            ,rnd.Next(15, 21)//hp
+                                            ,rnd.Next(10, 21)//stam
+                                            ,rnd.Next(10, 21)//atk
+                                            ,rnd.Next(10, 21)//def
+                                            ,rnd.Next(10, 21) + 3//spd
+                                        );
+                    //Console.WriteLine(RatLv2.ToString());
+                    return BirdLv2;
+                case 3:
+                    //Random rnd = new Random();
+                    Rat BirdLv3 = new Rat(   newName//Name :P
+                                            ,level
+                                            ,rnd.Next(25, 31)//hp
+                                            ,rnd.Next(15, 31)//stam
+                                            ,rnd.Next(15, 31)//atk
+                                            ,rnd.Next(15, 31)//def
+                                            ,rnd.Next(15, 31) + 4//spd
+                                        );
+                    //Console.WriteLine(RatLv3.ToString());
+                    return BirdLv3;
+                case 4:
+                    //Random rnd = new Random();
+                    Rat RatLv4 = new Rat(   newName//Name :P
+                                            ,level
+                                            ,rnd.Next(35, 36)//hp
+                                            ,rnd.Next(25, 36)//stam
+                                            ,rnd.Next(25, 36)//atk
+                                            ,rnd.Next(25, 36)//def
+                                            ,rnd.Next(25, 36) + 5//spd
+                                        );
+                    //Console.WriteLine(RatLv3.ToString());
+                    return RatLv4;
+            }
+            return givePlayerDefaultRat();
+        }
+
+        // Creates a single rat object with randomized stats
+        object dogCreator(int level) {
+            Random rnd = new Random();
+            int adjRndNum = rnd.Next(ratAdjNameList.Length);//grabs rnd adj from list
+            int nounRndNum = rnd.Next(ratNounNameList.Length);//grabs rnd noun from list
+            string newName = ratAdjNameList[adjRndNum]+" "+ratNounNameList[nounRndNum];//Combines adj & noun
+            switch (level) {
+                case 1:
+                    // Random rnd = new Random();
+                    Rat DogLv1 = new Rat(   newName//Name :P
+                                            ,level
+                                            ,rnd.Next(5, 11)//hp
+                                            ,rnd.Next(1, 11)//stam
+                                            ,rnd.Next(1, 11)//atk
+                                            ,rnd.Next(1, 11) + 2//def
+                                            ,rnd.Next(1, 11)//spd
+                                        );
+                    //Console.WriteLine(RatLv1.ToString());
+                    return DogLv1;
+                case 2:
+                    // Random rnd = new Random();
+                    Rat DogLv2 = new Rat(  newName//Name :P
+                                            ,level
+                                            ,rnd.Next(15, 21)//hp
+                                            ,rnd.Next(10, 21)//stam
+                                            ,rnd.Next(10, 21)//atk
+                                            ,rnd.Next(10, 21) + 3//def
+                                            ,rnd.Next(10, 21)//spd
+                                        );
+                    //Console.WriteLine(RatLv2.ToString());
+                    return DogLv2;
+                case 3:
+                    //Random rnd = new Random();
+                    Rat DogLv3 = new Rat(   newName//Name :P
+                                            ,level
+                                            ,rnd.Next(25, 31)//hp
+                                            ,rnd.Next(15, 31)//stam
+                                            ,rnd.Next(15, 31)//atk
+                                            ,rnd.Next(15, 31) + 4//def
+                                            ,rnd.Next(15, 31)//spd
+                                        );
+                    //Console.WriteLine(RatLv3.ToString());
+                    return DogLv3;
+                case 4:
+                    //Random rnd = new Random();
+                    Rat DogLv4 = new Rat(   newName//Name :P
+                                            ,level
+                                            ,rnd.Next(35, 36)//hp
+                                            ,rnd.Next(25, 36)//stam
+                                            ,rnd.Next(25, 36)//atk
+                                            ,rnd.Next(25, 36) + 5//def
+                                            ,rnd.Next(25, 36)//spd
+                                        );
+                    //Console.WriteLine(RatLv3.ToString());
+                    return DogLv4;
+            }
+            return givePlayerDefaultRat();
+        }
 
 
         // Gives Player half decent rat to start out w/
@@ -591,9 +835,28 @@ class Program
             return RatBase;
         }
 
+        // Creates Territorys
+        Territory Byway         = new Territory(1, "The Byway"         , 75.00, 25.00, 00.00, 00.00);
+        Territory Thoroughfare  = new Territory(2, "The Thoroughfare"  , 25.00, 75.00, 00.00, 00.00);
+        Territory Highroad      = new Territory(2, "The Highroad"      , 25.00, 00.00, 75.00, 00.00);
+        Territory Swamp         = new Territory(2, "The Swamp"         , 25.00, 00.00, 00.00, 75.00);
+        Territory NoMansLand    = new Territory(3, "No Man's Land"     , 10.00, 45.00, 45.00, 00.00);
+        Territory Cage          = new Territory(3, "The Cage"          , 00.00, 00.00, 50.00, 50.00);
+        Territory HellsKitchen  = new Territory(3, "Hell's Kitchen"    , 00.00, 50.00, 00.00, 50.00);
+        Territory Backalley     = new Territory(4, "The Backalley"     , 00.00, 100.00, 00.00, 00.00);
+        Territory Aviary        = new Territory(4, "The Aviary"        , 00.00, 00.00, 100.00, 00.00);
+        Territory Pound         = new Territory(4, "The Pound"         , 00.00, 00.00, 00.00, 100.00);
+
+        // Creates factions
+        Faction DogCop = new Faction("The Barky", "Police", 50.00, [Swamp, HellsKitchen, Cage, Pound]);
+        Faction TheivesCat = new Faction("Theive's Cat", "Gang", 50.00, [Thoroughfare, HellsKitchen, NoMansLand, Backalley]);
+        Faction BirdMafia = new Faction("Bird Mafia", "Gang", 50.00, [Highroad, Cage, NoMansLand, Aviary]);
+
 
         mainPlayer.addToPlayerRatRoster(givePlayerDefaultRat()); // :D
         MainMenu();
         Console.WriteLine("Remember, second mouse gets the cheese. Till next time...\n");
+        Thread.Sleep(2000); 
+        Console.Clear();
     }
 }

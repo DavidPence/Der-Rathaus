@@ -2,7 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 class CombatCPU {
-    List<object> cpuRatRoster = new List<object>();
+    private List<object> cpuRatRoster = new List<object>();
+    public string allegiance { get; set; }
+
+    // Constructor
+    public CombatCPU(string allegiance) {
+        this.allegiance = allegiance;
+    }
 
     public List<object> getCPURatRoster (){
         return cpuRatRoster;
