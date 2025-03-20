@@ -52,19 +52,18 @@ class Rat {
                 return name;
         }
 
-        void TakeDamage (int dmg) {
+        void takeDamage (int dmg) {
                 currentHp = currentHp - dmg;
         }
 
-        public override bool Equals(object obj){
+        public bool Equals(object obj){
                 if (obj is Rat otherRat) 
                         return this.ID == otherRat.ID; // Compare based on unique ID
         
                 return false;
         }
 
-    public override int GetHashCode()
-    {
+    public override int GetHashCode(){
         return ID.GetHashCode(); // Generate hash code based on ID
     }
 

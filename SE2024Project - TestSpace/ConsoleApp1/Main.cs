@@ -37,10 +37,30 @@ class Program
         
         //Main
 
+        // Creates Territorys
+        Territory Byway         = new Territory(1, "The Byway"         , 75.00, 25.00, 00.00, 00.00);
+        Territory Thoroughfare  = new Territory(2, "The Thoroughfare"  , 25.00, 75.00, 00.00, 00.00);
+        Territory Highroad      = new Territory(2, "The Highroad"      , 25.00, 00.00, 75.00, 00.00);
+        Territory Swamp         = new Territory(2, "The Swamp"         , 25.00, 00.00, 00.00, 75.00);
+        Territory NoMansLand    = new Territory(3, "No Man's Land"     , 10.00, 45.00, 45.00, 00.00);
+        Territory Cage          = new Territory(3, "The Cage"          , 00.00, 00.00, 50.00, 50.00);
+        Territory HellsKitchen  = new Territory(3, "Hell's Kitchen"    , 00.00, 50.00, 00.00, 50.00);
+        Territory Backalley     = new Territory(4, "The Backalley"     , 00.00, 100.00, 00.00, 00.00);
+        Territory Aviary        = new Territory(4, "The Aviary"        , 00.00, 00.00, 100.00, 00.00);
+        Territory Pound         = new Territory(4, "The Pound"         , 00.00, 00.00, 00.00, 100.00);
+
         Player mainPlayer = new Player();
-        CombatCPU Catsby = new CombatCPU("TheivesCat"); 
-        CombatCPU Marko = new CombatCPU("BirdMafia");
-        CombatCPU Theodog = new CombatCPU("TheBarky");
+        CombatCPU Catsby = new CombatCPU("Theives' Cat", "gang", 50.00,"ThievesCat", [Byway, Thoroughfare, HellsKitchen, NoMansLand, Backalley]); 
+        CombatCPU Emilio = new CombatCPU("Bird Mafia", "gang", 50.00, "BirdMafia", [Highroad, Cage, NoMansLand, Aviary]);
+        CombatCPU Theodog = new CombatCPU("The Fuzz", "law", 50.00, "TheFuzz", [Swamp, HellsKitchen, Cage, Pound]);
+
+        /*Names for bird leader
+        Emilio "The Migrator" Bellini
+        Vincenzo "The Nestkeeper" Varela
+
+
+        
+        */
 
         int numCheck (string num){
             while (true){
@@ -294,9 +314,7 @@ class Program
         // ************* Inventory *************
 
         void InventoryMenu() {
-            //Console.WriteLine("***** Your Inventory *****");
-            //Console.WriteLine("[1] - Your Rat(s)\n[2] - Your Stats\n[0] - Return\nEnter: ");
-            int selector /*= numCheck(Console.ReadLine())*/;
+            int selector;
             while (true) {
                 Console.WriteLine("\n***** Your Inventory *****");
                 Console.Write("[1] - Your Rat(s)\n[2] - Your Stats\n[0] - Return\nEnter: ");
@@ -311,8 +329,6 @@ class Program
                         Console.WriteLine("Please input valid number: ");
                         selector = numCheck(Console.ReadLine());
                     }
-                    // Console.WriteLine("[1] - Your Rat(s)\n[2] - Your Stats\n[0] - Return");
-                    // selector = numCheck(Console.ReadLine());
             }
             Console.WriteLine("Returning...");
         }
@@ -320,15 +336,18 @@ class Program
         // ************* Combat/Combat Menu *************
 
         int TerritoryMenu (){
-            Console.WriteLine("Who's on the choppin' block today:");
-            Console.WriteLine("What Level of Rats do you want to fight\n[1] - Cats\n[2] - Birds\n[3] - Dogs\n[0] - Return\nEnter: ");
+            Console.WriteLine("\nWho's on the choppin' block today:");
+            Console.WriteLine("[1] - Cats\n[2] - Birds\n[3] - Dogs\n[0] - Return\nEnter: ");
             int selector = numCheck(Console.ReadLine());
             switch (selector) {
                 case 1:
+                    Console.WriteLine("**Cats**");
                     return CombatMenu(Catsby);
                 case 2:
-                    return CombatMenu(Marko);
+                    Console.WriteLine("**Birds**");
+                    return CombatMenu(Emilio);
                 case 3:
+                    Console.WriteLine("**Dogs**");
                     return CombatMenu(Theodog);
                 case 0:
                     return 0;
@@ -337,97 +356,117 @@ class Program
         }
 
         int CombatMenu (CombatCPU opponent){
-            Console.WriteLine("Where to next Boss...");
-            switch (opponent.allegiance){
-                case "ThievesCat":
-                    break;
-                case "BirdMafia":
-                    break;
-                case "DogCops":
-                    break;
-            } 
+            opponent.displayTerritories();
 
-            Console.WriteLine("What Level of Rats do you want to fight\n[1] The Thourghfare - Level 1\n[2] Hell's Kitchen - Level 2\n[3] No Man's Land - Level 3\n[4] The Backalley - Level 4\n[0] - Return\nEnter: ");
+            //Console.WriteLine("What Level of Rats do you want to fight\n[1] The Thourghfare - Level 1\n[2] Hell's Kitchen - Level 2\n[3] No Man's Land - Level 3\n[4] The Backalley - Level 4\n[0] - Return\nEnter: ");
+            Console.Write("[0] - Return\nEnter: ");
             int selector = numCheck(Console.ReadLine());
-            while (true) {   
-                if (selector == 1) {
-                    return ChallengeSetupCombatMenu(1, opponent);
-                } else if (selector == 2) {
-                    return ChallengeSetupCombatMenu(2, opponent);
-                } else if (selector == 3) {
-                    return ChallengeSetupCombatMenu(3, opponent);
-                } else if (selector ==4) {
-                    return ChallengeSetupCombatMenu(4, opponent);
-                } else if (selector == 0) {
-                    Console.WriteLine("Returning...");
+            while (true) {  
+                if (selector == 0) {
+                    Console.WriteLine("Returning..."); // Could add effect
                     return 0;
+                } else if (selector > 0 && selector <= opponent.getTerritoryList().Count){
+                    return ChallengeSetupCombatMenu(opponent.getTerritoryList()[selector - 1].level, opponent);
                 } else {
                     Console.WriteLine("Please input valid number: ");
                     selector = numCheck(Console.ReadLine());
                 }
+
+                
+
+
+
+                // if (selector == 1) {
+                //     return ChallengeSetupCombatMenu(1, opponent);
+                // } else if (selector == 2) {
+                //     return ChallengeSetupCombatMenu(2, opponent);
+                // } else if (selector == 3) {
+                //     return ChallengeSetupCombatMenu(3, opponent);
+                // } else if (selector ==4) {
+                //     return ChallengeSetupCombatMenu(4, opponent);
+                // } else if (selector == 0) {
+                //     Console.WriteLine("Returning...");
+                //     return 0;
+                // } else {
+                //     Console.WriteLine("Please input valid number: ");
+                //     selector = numCheck(Console.ReadLine());
+                // }
             }
         }
 
-        int ChallengeSetupCombatMenu (int LvSet, CombatCPU opponent){
-            Console.WriteLine("What Challenge do you want to face\n[1] - 1 Enemy Rat\n[2] - 3 Enemy Rats\n[3] - 5 Enemy Rats\n[0] - Return\n Enter: ");
+        int ChallengeSetupCombatMenu (int LvSet, CombatCPU opponent){ //Problem here too maybe
+            Console.WriteLine("What Challenge do you want to face\n[1] - 1 Enemy\n[2] - 3 Enemies\n[3] - 5 Enemies\n[0] - Return\nEnter: ");
             int selector = numCheck(Console.ReadLine());
             mainPlayer.clearActivePlayerRatRoster();
             while (true) {
+                Console.Write("Choosing  case...");
+
+                // case 1
                 if (selector == 1) { //Player should always have at least one rat
+                    Console.WriteLine("CASE 1");
                     cpuRatRosterSetup(1, LvSet, opponent);
                     playerRatRosterSetup(1);
-                    return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), opponent.getCPURatRoster(), 1, LvSet);
+                    return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), opponent.getCPURatRoster(), 1, LvSet, opponent);
+                // case 2
                 } else if (selector == 2) {
+                    Console.WriteLine("CASE 2");
                     if (mainPlayer.getRatRosterCount() >= 3) {
                         cpuRatRosterSetup(3, LvSet, opponent);
                         playerRatRosterSetup(3);
-                        return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), opponent.getCPURatRoster(), 3, LvSet);
-
+                        return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), opponent.getCPURatRoster(), 3, LvSet, opponent);
                     } else {
                         Console.WriteLine("You do not have enough rats");
                         return 0;
                     }
+                // case 3
                 } else if (selector == 3) {
+                    Console.WriteLine("CASE 3");
                     if (mainPlayer.getRatRosterCount() >= 5) {
                         cpuRatRosterSetup(5, LvSet, opponent);
                         playerRatRosterSetup(5);
-                        return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), Catsby.getCPURatRoster(), 5, LvSet);
+                        return ACTUALFUCKINGRATFIGHT(mainPlayer.getActivePlayerRatRoster(), opponent.getCPURatRoster(), 5, LvSet, opponent);
                     } else {
                         Console.WriteLine("You do not have enough rats");
                         return 0;
                     }
+                // case 0 (failsafe)
                 } else if (selector == 0) {
                     return 0;
                 } else {
                     Console.WriteLine("Please input valid number: ");
                     selector = numCheck(Console.ReadLine());
                 }
+
+                // failsafe for failsafe
                 Console.WriteLine("Returning...\n");
                 return 0;
             }
         }
 
-        void cpuRatRosterSetup (int numOfRatsToCreate, int Lv, CombatCPU opponent) {
+        // sets up cpu roster based on who's who
+        // This could be done way better
+        void cpuRatRosterSetup (int numOfRatsToCreate, int Lv, CombatCPU opponent) { //Problem here probably
+            Console.WriteLine("Setting up CPU Cats");
             opponent.clearCPURatRoster();
+            Console.WriteLine($"Choosing case based on {opponent.allegiance}...");
             switch (opponent.allegiance) {
                 case "ThievesCat":
+                    Console.WriteLine("CASE 1");
                     for (int i = 0; i < numOfRatsToCreate; i++) {
+                        Console.WriteLine($"Adding {i+1} cat");
                         Catsby.addToCPURatRoster( catCreator(Lv) );
-                    }
-                    break;
-                case "birdMafia":
+                    } break;
+                case "BirdMafia":
+                    Console.WriteLine("CASE 2");
                     for (int i = 0; i < numOfRatsToCreate; i++) {
-                        Marko.addToCPURatRoster( birdCreator(Lv) );
-                    }
-                    break;
-                case "DogCop":
+                        Emilio.addToCPURatRoster( birdCreator(Lv) );
+                    } break;
+                case "TheFuzz":
+                    Console.WriteLine("CASE 3");
                     for (int i = 0; i < numOfRatsToCreate; i++) {
                         Theodog.addToCPURatRoster( dogCreator(Lv) );
-                    }
-                    break;
+                    } break;
             }
-
-            
         }
         
         void playerRatRosterSetup(int numOfRatsAllowed){
@@ -474,16 +513,18 @@ class Program
             }
         }
 
-        int ACTUALFUCKINGRATFIGHT (List<object> playersRats, List<object> enemysRats, int numOfFighters, int fightLv){
+        int ACTUALFUCKINGRATFIGHT (List<object> playersRats, List<object> enemysRats, int numOfFighters, int fightLv, CombatCPU opponent){
             Console.WriteLine("FUCKING FIGHTING");
-            if (RatFightHandler(numOfFighters)){
+            if (RatFightHandler(numOfFighters, opponent)){
                 Console.WriteLine("Player Wins");
                 if (fightLv == 1) {
-                    return 50*numOfFighters;
+                    return 40*numOfFighters;
                 } else if (fightLv == 2) {
-                    return 250*numOfFighters;
+                    return 200*numOfFighters;
                 } else if (fightLv == 3) {
-                    return 500*numOfFighters;
+                    return 400*numOfFighters;
+                } else if (fightLv == 4) {
+                    return 800*numOfFighters;  
                 } else {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("If you are seeing this I did something wrong :P");
@@ -499,12 +540,12 @@ class Program
         }
 
         // Atk/(2^(Atk/Def))
-        bool RatFightHandler(int numOfFighters) {
+        bool RatFightHandler(int numOfFighters, CombatCPU opponent) {
             int wins = 1;
             int loses = 1;
             for (int i = 0; i < numOfFighters; i++) {
                 Console.WriteLine($"\n*******************************************\nRound {i+1}, Fight!");
-                if (RatFight(i)) {
+                if (RatFight(i, opponent)) {
                     wins++;
                 } else {
                     loses++;
@@ -517,7 +558,7 @@ class Program
             }
         }
 
-        bool RatFight (int i) {
+        bool RatFight (int i, CombatCPU opponent) {
             Random rnd = new Random();
             // player rat vars
             string PlayerName = mainPlayer.getActivePlayerRat(i).name;
@@ -528,11 +569,20 @@ class Program
             bool playerTurn = true;
 
             // CPU rat vars
-            string CPUName = Catsby.getCPURat(i).name;
-            float CPUAtk = Catsby.getCPURat(i).atk;
-            float CPUDef = Catsby.getCPURat(i).def;
-            float CPUSpd = Catsby.getCPURat(i).spd;
-            float CPUHp = Catsby.getCPURat(i).hp;
+            Console.WriteLine("i: " + i);
+            //Console.WriteLine("Printing CPU: \n" + opponent.getCPURatRoster);
+            opponent.debugDetails();
+            string CPUName = opponent.getCPURat(i).name; // ***FAILING HERE***
+            /*
+            Unhandled exception. System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+            at System.Collections.Generic.List`1.get_Item(Int32 index)
+            at CombatCPU.getCPURat(Int32 i) in C:\Users\dpenc\Documents\GitHub\Der-Rathaus\SE2024Project - TestSpace\ConsoleApp1\CombatCPU.cs:line 29
+            at Program.<Main>g__RatFight|0_15(Int32 i, CombatCPU opponent, <>c__DisplayClass0_0&) in C:\Users\dpenc\Documents\GitHub\Der-Rathaus\SE2024Project - TestSpace\ConsoleApp1\Main.cs:line 563
+            */
+            float CPUAtk = opponent.getCPURat(i).atk;
+            float CPUDef = opponent.getCPURat(i).def;
+            float CPUSpd = opponent.getCPURat(i).spd;
+            float CPUHp = opponent.getCPURat(i).hp;
             //bool CPUTurn = false;
 
             // Damage values for each side
@@ -585,7 +635,7 @@ class Program
         }
 
         // Creates a single rat object with randomized stats
-        object ratCreator(int level)
+        Rat ratCreator(int level)
         {
             Random rnd = new Random();
             int adjRndNum = rnd.Next(ratAdjNameList.Length);//grabs rnd adj from list
@@ -593,7 +643,6 @@ class Program
             string newName = ratAdjNameList[adjRndNum]+" "+ratNounNameList[nounRndNum];//Combines adj & noun
             switch (level) {
                 case 1:
-                    // Random rnd = new Random();
                     Rat RatLv1 = new Rat(   newName//Name :P
                                             ,level
                                             ,rnd.Next(5, 11)//hp
@@ -602,7 +651,7 @@ class Program
                                             ,rnd.Next(1, 11)//def
                                             ,rnd.Next(1, 11)//spd
                                         );
-                    //Console.WriteLine(RatLv1.ToString());
+                    Console.WriteLine("**************\nLv1 Rat created\n*******************");
                     return RatLv1;
                 case 2:
                     // Random rnd = new Random();
@@ -645,7 +694,7 @@ class Program
         }
 
         // Creates a single CAT object with randomized stats
-        object catCreator(int level) {
+        Rat catCreator(int level) {
             Random rnd = new Random();
             int adjRndNum = rnd.Next(ratAdjNameList.Length);//grabs rnd adj from list
             int nounRndNum = rnd.Next(ratNounNameList.Length);//grabs rnd noun from list
@@ -661,7 +710,7 @@ class Program
                                             ,rnd.Next(1, 11)//def
                                             ,rnd.Next(1, 11)//spd
                                         );
-                    //Console.WriteLine(RatLv1.ToString());
+                    Console.WriteLine("**************\nLv1 Rat created\n*******************");
                     return CatLv1;
                 case 2:
                     // Random rnd = new Random();
@@ -704,7 +753,7 @@ class Program
         }
 
         // Creates a single BIRD object with randomized stats
-        object birdCreator(int level) {
+        Rat birdCreator(int level) {
             Random rnd = new Random();
             int adjRndNum = rnd.Next(ratAdjNameList.Length);//grabs rnd adj from list
             int nounRndNum = rnd.Next(ratNounNameList.Length);//grabs rnd noun from list
@@ -763,7 +812,7 @@ class Program
         }
 
         // Creates a single rat object with randomized stats
-        object dogCreator(int level) {
+        Rat dogCreator(int level) {
             Random rnd = new Random();
             int adjRndNum = rnd.Next(ratAdjNameList.Length);//grabs rnd adj from list
             int nounRndNum = rnd.Next(ratNounNameList.Length);//grabs rnd noun from list
@@ -823,7 +872,7 @@ class Program
 
 
         // Gives Player half decent rat to start out w/
-        object givePlayerDefaultRat (){
+        Rat givePlayerDefaultRat (){
             Rat RatBase = new Rat(  "Rattus Norvegicus"//Name
                                     ,1
                                     ,8//hp
@@ -835,22 +884,23 @@ class Program
             return RatBase;
         }
 
-        // Creates Territorys
-        Territory Byway         = new Territory(1, "The Byway"         , 75.00, 25.00, 00.00, 00.00);
-        Territory Thoroughfare  = new Territory(2, "The Thoroughfare"  , 25.00, 75.00, 00.00, 00.00);
-        Territory Highroad      = new Territory(2, "The Highroad"      , 25.00, 00.00, 75.00, 00.00);
-        Territory Swamp         = new Territory(2, "The Swamp"         , 25.00, 00.00, 00.00, 75.00);
-        Territory NoMansLand    = new Territory(3, "No Man's Land"     , 10.00, 45.00, 45.00, 00.00);
-        Territory Cage          = new Territory(3, "The Cage"          , 00.00, 00.00, 50.00, 50.00);
-        Territory HellsKitchen  = new Territory(3, "Hell's Kitchen"    , 00.00, 50.00, 00.00, 50.00);
-        Territory Backalley     = new Territory(4, "The Backalley"     , 00.00, 100.00, 00.00, 00.00);
-        Territory Aviary        = new Territory(4, "The Aviary"        , 00.00, 00.00, 100.00, 00.00);
-        Territory Pound         = new Territory(4, "The Pound"         , 00.00, 00.00, 00.00, 100.00);
+        // // Creates Territorys
+        // Territory Byway         = new Territory(1, "The Byway"         , 75.00, 25.00, 00.00, 00.00);
+        // Territory Thoroughfare  = new Territory(2, "The Thoroughfare"  , 25.00, 75.00, 00.00, 00.00);
+        // Territory Highroad      = new Territory(2, "The Highroad"      , 25.00, 00.00, 75.00, 00.00);
+        // Territory Swamp         = new Territory(2, "The Swamp"         , 25.00, 00.00, 00.00, 75.00);
+        // Territory NoMansLand    = new Territory(3, "No Man's Land"     , 10.00, 45.00, 45.00, 00.00);
+        // Territory Cage          = new Territory(3, "The Cage"          , 00.00, 00.00, 50.00, 50.00);
+        // Territory HellsKitchen  = new Territory(3, "Hell's Kitchen"    , 00.00, 50.00, 00.00, 50.00);
+        // Territory Backalley     = new Territory(4, "The Backalley"     , 00.00, 100.00, 00.00, 00.00);
+        // Territory Aviary        = new Territory(4, "The Aviary"        , 00.00, 00.00, 100.00, 00.00);
+        // Territory Pound         = new Territory(4, "The Pound"         , 00.00, 00.00, 00.00, 100.00);
 
         // Creates factions
-        Faction DogCop = new Faction("The Barky", "Police", 50.00, [Swamp, HellsKitchen, Cage, Pound]);
-        Faction TheivesCat = new Faction("Theive's Cat", "Gang", 50.00, [Thoroughfare, HellsKitchen, NoMansLand, Backalley]);
-        Faction BirdMafia = new Faction("Bird Mafia", "Gang", 50.00, [Highroad, Cage, NoMansLand, Aviary]);
+        // Faction DogCop = new Faction("The Barky", "Police", 50.00, [Swamp, HellsKitchen, Cage, Pound]);
+        // Faction TheivesCat = new Faction("Theive's Cat", "Gang", 50.00, [Thoroughfare, HellsKitchen, NoMansLand, Backalley]);
+        // Faction BirdMafia = new Faction("Bird Mafia", "Gang", 50.00, [Highroad, Cage, NoMansLand, Aviary]);
+        
 
 
         mainPlayer.addToPlayerRatRoster(givePlayerDefaultRat()); // :D

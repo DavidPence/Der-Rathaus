@@ -63,7 +63,7 @@ class Player{
     }
 
     public string getBasicPlayerInfo() {
-        string allNamesInRoster= "";
+        string allNamesInRoster = "";
         int G = money;
         foreach (Rat rat in playerRatRoster){
             allNamesInRoster += ($"{rat.name}\n");
