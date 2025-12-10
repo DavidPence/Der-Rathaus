@@ -16,22 +16,24 @@ class Rat {
        
        
         // Constructor
-        public Rat(string name, int level, int hp, int stam, int atk, int def, int spd) {
-        this.ID = lastID++;
-        this.name = name;
-        this.level = level;
-        this.hp = hp;
-        this.currentHp = hp;
-        this.stam = stam;
-        this.currentStam = stam;
-        this.atk = atk;
-        this.def = def;
-        this.spd = spd;
+        public Rat(string name, int level, int hp, int stam, int atk, int def, int spd) 
+        {
+                this.ID = lastID++;
+                this.name = name;
+                this.level = level;
+                this.hp = hp;
+                this.currentHp = hp;
+                this.stam = stam;
+                this.currentStam = stam;
+                this.atk = atk;
+                this.def = def;
+                this.spd = spd;
         }
 
 
         // ToString
-        public override string ToString() {
+        public override string ToString() 
+        {
                 return GetType().GetProperties()
                         .Select(info => (info.Name, Value: info.GetValue(this, null) ?? "(null)"))
                         .Aggregate( new StringBuilder(),
@@ -40,30 +42,35 @@ class Rat {
                                   );
         }
 
-        public int getLevel(){
+        public int getLevel()
+        {
                 return level;
         }
 
-        public int getCurrentHp(){
+        public int getCurrentHp()
+        {
                 return currentHp;
         }
 
-        string getName(){
+        string getName()
+        {
                 return name;
         }
 
-        void takeDamage (int dmg) {
+        void takeDamage (int dmg) 
+        {
                 currentHp = currentHp - dmg;
         }
 
-        public bool Equals(object obj){
-                if (obj is Rat otherRat) 
-                        return this.ID == otherRat.ID; // Compare based on unique ID
-        
-                return false;
+        public bool duplicateRatChecker(Rat rat)
+        {
+                if (this.ID == rat.ID){
+                        return true;
+                } return false;
         }
 
-    public override int GetHashCode(){
+    public override int GetHashCode()
+    {
         return ID.GetHashCode(); // Generate hash code based on ID
     }
 

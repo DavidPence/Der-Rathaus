@@ -5,12 +5,13 @@ class CombatCPU {
     public string name { get; set; }
     string type { get; set; }
     double playerRepToNPC { get; set; }
-    private List<object> cpuRatRoster = new List<object>();
+    private List<Rat> cpuRatRoster = new List<Rat>();
     public string allegiance { get; set; }
     List<Territory> territoryList { get; set; }
 
     // Constructor
-    public CombatCPU(string name, string type, double playerRepToNPC, string allegiance, List<Territory> territoryList) {
+    public CombatCPU(string name, string type, double playerRepToNPC, string allegiance, List<Territory> territoryList) 
+    {
         this.name = name;
         this.type = type;
         this.playerRepToNPC = playerRepToNPC;
@@ -18,28 +19,34 @@ class CombatCPU {
         this.territoryList = territoryList;
     }
 
-    public List<Territory> getTerritoryList() {
+    public List<Territory> getTerritoryList() 
+    {
         return territoryList;
     }
 
-    public List<object> getCPURatRoster (){
+    public List<Rat> getCPURatRoster ()
+    {
         return cpuRatRoster;
     }
-    public Rat getCPURat(int i){
+    public Rat getCPURat(int i)
+    {
             Rat tempRat = (Rat)cpuRatRoster[i];
             return tempRat;
     }
 
-    public void addToCPURatRoster(object newRat) {
+    public void addToCPURatRoster(Rat newRat) 
+    {
         cpuRatRoster.Add(newRat);
     }
 
-    public void clearCPURatRoster() {
+    public void clearCPURatRoster() 
+    {
         cpuRatRoster.Clear();
     }
 
     // ToString
-    public override string ToString() {
+    public override string ToString() 
+    {
             return GetType().GetProperties()
                     .Select(info => (info.Name, Value: info.GetValue(this, null) ?? "(null)"))
                     .Aggregate( new System.Text.StringBuilder(),
@@ -48,17 +55,20 @@ class CombatCPU {
                               );
     }
 
-    public void debugDetails (){
+    public void debugDetails ()
+    {
         Console.WriteLine(  "Name: " + name +
                             "\nType: " + type +
                             "\nplayerRepTo NPC: " + playerRepToNPC +
                             "\nAllegiance: " + allegiance +
                             "\nFull Rat Roster: \n");
-        foreach (Rat rat in cpuRatRoster) {
+        foreach (Rat rat in cpuRatRoster) 
+        {
             Console.WriteLine("Rat: " + rat.name);
         }
         Console.WriteLine("\nFull 'Terry' list: \n");
-        foreach (Territory terry in territoryList) {
+        foreach (Territory terry in territoryList) 
+        {
             Console.WriteLine("" + terry.name);
         }
     }
