@@ -71,10 +71,10 @@ class Territory {
                         catControl = territoryPercentCheck(catControl + percent);
                         break;
                     case "Bird Mafia":
-                        birdControl = territoryPercentCheck(catControl + percent);
+                        birdControl = territoryPercentCheck(birdControl + percent);
                         break;
                     case "The Fuzz":
-                        catControl = territoryPercentCheck(catControl + percent);
+                        catControl = territoryPercentCheck(dogControl + percent);
                         break;
                 }
                 break;
@@ -109,19 +109,19 @@ class Territory {
         switch (index) {
             case 0:
                 highestControlPrecent = "Player";
-                break;
+                return;
             case 1:
                 highestControlPrecent = "ThievesCat";
-                break;
+                return;
             case 2:
                 highestControlPrecent =  "BirdMafia";
-                break;
+                return;
             case 3:
                 highestControlPrecent = "TheFuzz";
-                break;
+                return;
             case 4:
                 highestControlPrecent = "Tied";
-                break;
+                return;
         }
         highestControlPrecent = "fuck";
     } 

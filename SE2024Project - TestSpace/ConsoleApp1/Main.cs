@@ -248,12 +248,25 @@ class Program
             }
         }
 
-        // Loops through TerryData.json and overwrites allTerrys data
+        // // Loops through TerryData.json and overwrites allTerrys data
+        // void loadTerryData(List<Territory> newTerrysData)
+        // {
+        //     for(int i=0;i<allTerrys.Count;i++)
+        //     {
+        //         allTerrys[i] = newTerrysData[i];
+        //     }
+        // }
         void loadTerryData(List<Territory> newTerrysData)
         {
             for(int i=0;i<allTerrys.Count;i++)
             {
-                allTerrys[i] = newTerrysData[i];
+                allTerrys[i].level = newTerrysData[i].level;
+                allTerrys[i].name = newTerrysData[i].name;
+                allTerrys[i].areaCode = newTerrysData[i].areaCode;
+                allTerrys[i].playerControlPrecent = newTerrysData[i].playerControlPrecent;
+                allTerrys[i].catControl = newTerrysData[i].catControl;
+                allTerrys[i].birdControl = newTerrysData[i].birdControl;
+                allTerrys[i].dogControl = newTerrysData[i].dogControl;
             }
         }
 
