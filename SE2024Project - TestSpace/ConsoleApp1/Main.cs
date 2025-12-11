@@ -97,6 +97,7 @@ class Program
         Territory Backalley     = new Territory(4, "The Backalley"     , 4, 00.00, 100.00, 00.00, 00.00);
         Territory Aviary        = new Territory(4, "The Aviary"        , 6, 00.00, 00.00, 100.00, 00.00);
         Territory Pound         = new Territory(4, "The Pound"         , 8, 00.00, 00.00, 00.00, 100.00);
+        List<Territory> allTerrys = new List<Territory> {Byway, Thoroughfare, Highroad, Swamp, NoMansLand, Cage, HellsKitchen, Backalley, Aviary, Pound};
 
         Player mainPlayer = new Player();
         CombatCPU Catsby = new CombatCPU("Theives' Cat", "gang", 50.00,"ThievesCat", [Byway, Thoroughfare, HellsKitchen, NoMansLand, Backalley]); 
@@ -133,7 +134,6 @@ class Program
 
         void MainMenu () {
             Console.ForegroundColor = ConsoleColor.White;
-            //Console.WriteLine("Welcome to ...Derrr RrrATHaus...");
             speechDisplay("\nWelcome to ...Derrr RrrATHaus...");
             int selector;
             Thread.Sleep(300); 
@@ -144,7 +144,7 @@ class Program
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(mainPlayer.getBasicPlayerInfo());
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("[1] - Shop\n[2] - Territory Control\n[3] - Your Inventory\n[0] - Close Program\nEnter: ");
+                Console.Write("[1] - Shop\n[2] - Territory Control\n[3] - Your Inventory\n[4] - Save/Load Data\n[0] - Close Program\nEnter: ");
                 selector = numCheck(Console.ReadLine());
                 if (selector == 1) {
                     ShopMenu();
@@ -152,15 +152,17 @@ class Program
                     mainPlayer.money = mainPlayer.money + TerritoryMenu();
                 } else if (selector == 3) {
                     InventoryMenu();
+                } else if (selector == 4) {
+                    SaveLoadMenu();
                 } else if (selector == 0) {
                     return;
                 } 
-                // Console.WriteLine("[1] - Shop\n[2] - Fight\n[3] - Your Inventory\n[0] - Close Program\n Enter: ");
-                // selector = numCheck(Console.ReadLine());
             }
         }
 
-        // ************* Map *************
+        //////////////////////////////////////////////////////////////////////////////////////
+        ///                         MAP
+        ///////////////////////////////////////////////////////////////////////////////////////
 
         void mapMenu () 
         {
@@ -216,9 +218,48 @@ class Program
 
         }
 
+        //////////////////////////////////////////////////////////////////////////////////////
+        ///                         SAVE/LOAD MENU
+        //////////////////////////////////////////////////////////////////////////////////////
 
+        void SaveLoadMenu () {
+            int selector;
+            while (true) {
+                Console.ForegroundColor = ConsoleColor.White;
+                speechDisplay("*** Save/Load Menu *** ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(mainPlayer.getBasicPlayerInfo());
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("[1] - Save Game\n[2] - Load Game\n[0] - Return\nEnter: ");
+                selector = numCheck(Console.ReadLine());
+                
+                if (selector == 1) {
+                    DataManager.SavePlayer("PlayerData.json", mainPlayer);
+                    DataManager.SaveTerrys("TerritoryData.json", allTerrys);
+                    //foreach (Territory terry in allTerrys){ DataManager.SaveTerry("TerritoryData.json", terry); } 
+                    Console.WriteLine("Game Saved!\n");
+                } else if (selector == 2) {
+                    mainPlayer = DataManager.LoadPlayer("PlayerData.json");
+                    loadTerryData(DataManager.LoadTerrys("TerritoryData.json"));
+                    Console.WriteLine("Game Loaded!\n");
+                } else if (selector == 0) {
+                    return;
+                } 
+            }
+        }
 
-        // ************* Shop *************
+        // Loops through TerryData.json and overwrites allTerrys data
+        void loadTerryData(List<Territory> newTerrysData)
+        {
+            for(int i=0;i<allTerrys.Count;i++)
+            {
+                allTerrys[i] = newTerrysData[i];
+            }
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////
+        ///                         SHOP
+        //////////////////////////////////////////////////////////////////////////////////////
         
         // CAN be better
         // Creates Rats then display in text
@@ -404,8 +445,9 @@ class Program
         }
 
 
-
-        // ************* Inventory *************
+        //////////////////////////////////////////////////////////////////////////////////////
+        ///                         INVENTORY
+        ///////////////////////////////////////////////////////////////////////////////////////
 
         void InventoryMenu() {
             int selector;
@@ -427,7 +469,10 @@ class Program
             Console.WriteLine("Returning...");
         }
 
-        // ************* Combat/Combat Menu *************
+        //////////////////////////////////////////////////////////////////////////////////////
+        ///                         COMBAT/COMBAT MENU
+        ///////////////////////////////////////////////////////////////////////////////////////
+
 
         int TerritoryMenu (){
             Console.WriteLine("\n");

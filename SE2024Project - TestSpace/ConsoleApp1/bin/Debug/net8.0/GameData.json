@@ -1,0 +1,23 @@
+{
+  "Money": 300,
+  "Rats": [
+    {
+      "ratName": "Rattus Norvegicus",
+      "level": 1,
+      "hp": 8,
+      "stam": 10,
+      "atk": 5,
+      "def": 5,
+      "spd": 7
+    },
+    {
+      "ratName": "Slimey Rat",
+      "level": 1,
+      "hp": 5,
+      "stam": 2,
+      "atk": 1,
+      "def": 6,
+      "spd": 8
+    }
+  ]
+}

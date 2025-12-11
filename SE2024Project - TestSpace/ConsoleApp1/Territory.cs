@@ -8,10 +8,10 @@ class Territory {
     public string name { get; set;}
     public int areaCode { get; set; }
     public string highestControlPrecent { get; set;}
-    private double playerControlPrecent { get; set;}
-    private double catControl { get; set;}
-    private double birdControl { get; set;}
-    private double dogControl { get; set;}
+    public double playerControlPrecent { get; set;}
+    public double catControl { get; set;}
+    public double birdControl { get; set;}
+    public double dogControl { get; set;}
 
     public Territory (int level, string name, int areaCode, double playerControlPrecent, double catControl, double birdControl, double dogControl) 
     {

@@ -1,0 +1,92 @@
+[
+  {
+    "level": 1,
+    "name": "The Byway",
+    "areaCode": 2,
+    "playerControlPrecent": 74.5,
+    "catControl": 25.5,
+    "birdControl": 0,
+    "dogControl": 0
+  },
+  {
+    "level": 2,
+    "name": "The Thoroughfare",
+    "areaCode": 1,
+    "playerControlPrecent": 25,
+    "catControl": 75,
+    "birdControl": 0,
+    "dogControl": 0
+  },
+  {
+    "level": 2,
+    "name": "The Highroad",
+    "areaCode": 3,
+    "playerControlPrecent": 25,
+    "catControl": 0,
+    "birdControl": 75,
+    "dogControl": 0
+  },
+  {
+    "level": 2,
+    "name": "The Swamp",
+    "areaCode": 9999,
+    "playerControlPrecent": 25,
+    "catControl": 0,
+    "birdControl": 0,
+    "dogControl": 75
+  },
+  {
+    "level": 3,
+    "name": "No Man\u0027s Land",
+    "areaCode": 5,
+    "playerControlPrecent": 10,
+    "catControl": 45,
+    "birdControl": 45,
+    "dogControl": 0
+  },
+  {
+    "level": 3,
+    "name": "The Cage",
+    "areaCode": 9,
+    "playerControlPrecent": 0,
+    "catControl": 0,
+    "birdControl": 50,
+    "dogControl": 50
+  },
+  {
+    "level": 3,
+    "name": "Hell\u0027s Kitchen",
+    "areaCode": 7,
+    "playerControlPrecent": 0,
+    "catControl": 50,
+    "birdControl": 0,
+    "dogControl": 50
+  },
+  {
+    "level": 4,
+    "name": "The Backalley",
+    "areaCode": 4,
+    "playerControlPrecent": 0.5,
+    "catControl": 99.5,
+    "birdControl": 0,
+    "dogControl": 0
+  },
+  {
+    "level": 4,
+    "name": "The Aviary",
+    "areaCode": 6,
+    "playerControlPrecent": 0,
+    "catControl": 0,
+    "birdControl": 100,
+    "dogControl": 0
+  },
+  {
+    "level": 4,
+    "name": "The Pound",
+    "areaCode": 8,
+    "playerControlPrecent": 0,
+    "catControl": 0,
+    "birdControl": 0,
+    "dogControl": 100
+  }
+]
